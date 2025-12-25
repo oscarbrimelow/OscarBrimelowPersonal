@@ -34,9 +34,18 @@ export default function App() {
   // Move at 0.15x speed (slower parallax = keeps images visible longer).
   // Formula: y = scrollY * 0.15 - (startOffset * 0.15)
   const parallaxFactor = 0.15
+  
+  // Custom Transforms for Slide Effect (JHB -> CLE)
+  // JHB: Standard parallax until vh, then slides Left + Pinned Vertical
+  const jhbY = useTransform(scrollY, [0, vh, 2*vh], [-vh*0.15, 0, vh])
+  const jhbX = useTransform(scrollY, [0, vh, 2*vh], ['0%', '0%', '-100%'])
+
+  // CLE: Starts pinned vertical (but offscreen right) at vh, then slides in
+  const cleY = useTransform(scrollY, [0, vh, 2*vh, 3*vh], [-vh*0.3, -vh, 0, vh*0.15])
+  const cleX = useTransform(scrollY, [0, vh, 2*vh], ['100%', '100%', '0%'])
+
+  // Other sections standard parallax
   const skyY = useTransform(scrollY, v => v * parallaxFactor)
-  const jhbY = useTransform(scrollY, v => v * parallaxFactor - (vh * 1) * parallaxFactor)
-  const cleY = useTransform(scrollY, v => v * parallaxFactor - (vh * 2) * parallaxFactor)
   const iomY = useTransform(scrollY, v => v * parallaxFactor - (vh * 3) * parallaxFactor)
   const jungleY = useTransform(scrollY, v => v * parallaxFactor - (vh * 4) * parallaxFactor)
   const mineshaftY = useTransform(scrollY, v => v * parallaxFactor - (vh * 5) * parallaxFactor)
@@ -287,32 +296,20 @@ export default function App() {
       <div className="world" style={{ height: '600vh' }}>
         {/* Parallax Backgrounds */}
         <BgLayer img={skyBg} y={skyY} zIndex={0} top="0" />
-        <BgLayer img={jhbBg} y={jhbY} zIndex={0} top="100vh" blend />
-        
-        {/* Transition Layer between JHB and CLE */}
-        <motion.div
-           style={{
-             position: 'absolute',
-             top: '180vh',
-             left: 0,
-             width: '100%',
-             height: '40vh',
-             zIndex: 1,
-             background: 'linear-gradient(to bottom, transparent, #0a0910 50%, transparent)',
-             pointerEvents: 'none',
-             y: jhbY // Move with JHB roughly
-           }}
-        />
-
-        <BgLayer img={cleBg} y={cleY} zIndex={0} top="200vh" blend />
+        <BgLayer img={jhbBg} y={jhbY} x={jhbX} zIndex={0} top="100vh" blend />
+        <BgLayer img={cleBg} y={cleY} x={cleX} zIndex={0} top="200vh" blend />
         <BgLayer img={iomBg} y={iomY} zIndex={0} top="300vh" blend />
         <BgLayer img={jungleBg} y={jungleY} zIndex={0} top="400vh" blend />
         <BgLayer img={mineshaftBg} y={mineshaftY} zIndex={0} top="500vh" blend />
 
         <div style={{ position: 'relative', zIndex: 10 }}>
           {skySection}
-          {jhbSection}
-          {cleSection}
+          <motion.div style={{ x: jhbX, y: jhbY }}>
+            {jhbSection}
+          </motion.div>
+          <motion.div style={{ x: cleX, y: cleY }}>
+            {cleSection}
+          </motion.div>
           {iomSection}
           {jungleSection}
           {mineshaftSection}
@@ -322,7 +319,7 @@ export default function App() {
   )
 }
 
-function BgLayer({ img, y, top, blend }) {
+function BgLayer({ img, y, x, top, blend }) {
   return (
     <motion.img 
       src={img}
@@ -338,6 +335,7 @@ function BgLayer({ img, y, top, blend }) {
         zIndex: 0,
         pointerEvents: 'none',
         y: y,
+        x: x,
         willChange: 'transform',
         maskImage: blend ? 'linear-gradient(to bottom, transparent 0%, black 20%, black 100%)' : undefined,
         WebkitMaskImage: blend ? 'linear-gradient(to bottom, transparent 0%, black 20%, black 100%)' : undefined
