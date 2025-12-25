@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { play } from '../audio/engine'
+import { useGame } from '../context/GameContext'
 
 const items = [
   { title: 'AskOsc.com', href: 'https://AskOsc.com', primary: true, icon: '🤖' },
