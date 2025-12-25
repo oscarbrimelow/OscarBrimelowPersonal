@@ -17,6 +17,7 @@ import cleBg from './assets/cle-bg.png'
 import iomBg from './assets/iom-bg.png'
 import jungleBg from './assets/jungle-bg.png'
 import mineshaftBg from './assets/mineshaft-bg.png'
+import chameleonCursor from './assets/chameleon.ani'
 
 export default function App() {
   const { scrollY } = useScroll()
@@ -73,9 +74,8 @@ export default function App() {
   useEffect(() => {
     console.log("%cHey fellow dev, hope you like the pixels!", "font-family: 'Press Start 2P'; font-size: 16px; color: #00ffd0; background: #222; padding: 10px; border-radius: 4px;")
     
-    // Custom Sword Cursor
-    const swordCursor = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" style="transform: rotate(-45deg);"><text y="24" x="0" font-size="24">🗡️</text></svg>') 0 0, auto`
-    document.body.style.cursor = swordCursor
+    // Custom Chameleon Cursor
+    document.body.style.cursor = `url('${chameleonCursor}'), auto`
     
     const handleMove = (e) => {
       if (Math.random() > 0.5) return // Reduce density
