@@ -1,9 +1,15 @@
 import { motion } from 'framer-motion'
+import { useGame } from '../context/GameContext'
 
 export default function Chameleon({ section }) {
+  const { handleChameleonClick } = useGame()
   const color = section === 'sky' ? '#00b7ff' : section === 'jungle' ? '#00ff9a' : '#b0b0b0'
+  
   return (
     <motion.div 
+      onClick={handleChameleonClick}
+      whileHover={{ scale: 1.2 }}
+      whileTap={{ scale: 0.9 }}
       animate={{ 
         scale: [1, 1.05, 1],
         rotate: [0, 2, -2, 0]
@@ -16,10 +22,11 @@ export default function Chameleon({ section }) {
       style={{
         position: 'fixed',
         right: 12,
-        bottom: 12,
+        bottom: 80, // Moved up to avoid overlap with phone button
         zIndex: 1200,
         width: 54,
         height: 32,
+        cursor: 'pointer',
         filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.6))'
       }}
     >

@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
-import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'framer-motion'
-import SoundBar from './components/SoundBar.jsx'
+import { useEffect, useState } from 'react'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { GameProvider, useGame } from './context/GameContext'
+import PlayerHUD from './components/PlayerHUD.jsx'
+import BlackberryPhone from './components/BlackberryPhone.jsx'
 import Chameleon from './components/Chameleon.jsx'
 import RetroDialog from './components/RetroDialog.jsx'
 import SocialIcons from './components/SocialIcons.jsx'
@@ -19,8 +21,69 @@ import mineshaftBg from './assets/mineshaft-bg.png'
 import tardisCursor from './assets/tardis-cursor.svg'
 
 export default function App() {
+  return (
+    <GameProvider>
+      <MainGame />
+    </GameProvider>
+  )
+}
+
+function MainGame() {
   const { scrollY } = useScroll()
+  const { addMoney, addToInventory, takeDamage, theme, triggerLevelUp } = useGame()
   const [vh, setVh] = useState(window.innerHeight)
+  const [isShaking, setIsShaking] = useState(false)
+
+  // Scroll Speed Damage Logic
+  useEffect(() => {
+    let lastScrollY = window.scrollY
+    let lastTime = Date.now()
+    
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      const currentTime = Date.now()
+      const timeDiff = currentTime - lastTime
+      
+      if (timeDiff > 50) { // Check every 50ms
+        const distance = Math.abs(currentScrollY - lastScrollY)
+        const speed = distance / timeDiff
+        
+        // Threshold for "Too Fast"
+        if (speed > 3) { 
+          setIsShaking(true)
+          takeDamage(1)
+        } else {
+          setIsShaking(false)
+        }
+        
+        lastScrollY = currentScrollY
+        lastTime = currentTime
+      }
+    }
+    
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [takeDamage])
+
+  // "OSCAR" Code Listener
+  useEffect(() => {
+    const code = ['o','s','c','a','r']
+    let idx = 0
+    const h = (e) => {
+      if (e.key.toLowerCase() === code[idx]) {
+        idx++
+        if (idx === code.length) {
+          triggerLevelUp()
+          alert("LEVEL UP! YOU FOUND THE CREATOR CODE!")
+          idx = 0
+        }
+      } else {
+        idx = 0
+      }
+    }
+    window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
+  }, [triggerLevelUp])
 
   useEffect(() => {
     const updateVh = () => setVh(window.innerHeight)
@@ -29,21 +92,12 @@ export default function App() {
     return () => window.removeEventListener('resize', updateVh)
   }, [])
 
-  // Parallax Logic:
-  // Move at 0.15x speed (slower parallax = keeps images visible longer).
-  // Formula: y = scrollY * 0.15 - (startOffset * 0.15)
+  // Parallax Logic
   const parallaxFactor = 0.15
-  
-  // Custom Transforms for Slide Effect (JHB -> CLE)
-  // JHB: Standard parallax until vh, then slides Left + Pinned Vertical
   const jhbY = useTransform(scrollY, [0, vh, 2*vh], [-vh*0.15, 0, vh])
   const jhbX = useTransform(scrollY, [0, vh, 2*vh], ['0%', '0%', '-100%'])
-
-  // CLE: Starts pinned vertical (but offscreen right) at vh, then slides in
   const cleY = useTransform(scrollY, [0, vh, 2*vh, 3*vh], [-vh*0.3, -vh, 0, vh*0.15])
   const cleX = useTransform(scrollY, [0, vh, 2*vh], ['100%', '100%', '0%'])
-
-  // Other sections standard parallax
   const skyY = useTransform(scrollY, v => v * parallaxFactor)
   const iomY = useTransform(scrollY, v => v * parallaxFactor - (vh * 3) * parallaxFactor)
   const jungleY = useTransform(scrollY, v => v * parallaxFactor - (vh * 4) * parallaxFactor)
@@ -62,8 +116,6 @@ export default function App() {
     const h = () => {
       const y = window.scrollY
       const h = window.innerHeight
-      // 6 Sections total: Sky, JHB, CLE, IOM, Jungle, Mineshaft
-      // Thresholds are roughly at X.5 of each section
       if (y < h * 0.5) setSection('sky')
       else if (y < h * 1.5) setSection('jhb')
       else if (y < h * 2.5) setSection('cle')
@@ -82,37 +134,29 @@ export default function App() {
 
   useEffect(() => {
     console.log("%cHey fellow dev, hope you like the pixels!", "font-family: 'Press Start 2P'; font-size: 16px; color: #00ffd0; background: #222; padding: 10px; border-radius: 4px;")
-    
-    // Custom Tardis Cursor
     document.body.style.cursor = `url('${tardisCursor}') 16 16, auto`
     
     const handleMove = (e) => {
-      if (Math.random() > 0.5) return // Reduce density
+      if (Math.random() > 0.5) return 
       const dot = document.createElement('div')
       dot.className = 'cursor-trail'
       dot.style.left = `${e.clientX}px`
       dot.style.top = `${e.clientY}px`
-      
-      // Sparkle styles
       const size = Math.random() * 6 + 2
       dot.style.width = `${size}px`
       dot.style.height = `${size}px`
       dot.style.background = ['#fff', '#00ffd0', '#ffd700', '#ff0055'][Math.floor(Math.random() * 4)]
-      dot.style.borderRadius = '0%' // Pixel square
+      dot.style.borderRadius = '0%'
       dot.style.boxShadow = '0 0 4px rgba(255,255,255,0.8)'
       dot.style.pointerEvents = 'none'
       dot.style.position = 'fixed'
       dot.style.zIndex = '9999'
       dot.style.transition = 'transform 0.5s, opacity 0.5s'
-      
       document.body.appendChild(dot)
-      
-      // Animate out
       requestAnimationFrame(() => {
         dot.style.transform = `translate(${Math.random()*20-10}px, ${Math.random()*20+10}px) rotate(${Math.random()*360}deg)`
         dot.style.opacity = '0'
       })
-
       setTimeout(() => dot.remove(), 500)
     }
     window.addEventListener('mousemove', handleMove)
@@ -207,7 +251,6 @@ export default function App() {
           Lighthouse memory unlocked. Family stories, sea spray, and pixel sunsets.
         </RetroDialog>
       )}
-      {/* Clickable Overlay Icons (Absolutely positioned in the scene) */}
       <motion.div 
         whileHover={{ scale: 1.2, rotate: 10 }}
         style={{ position: 'absolute', top: '20%', right: '10%', fontSize: '40px', cursor: 'pointer', zIndex: 20 }}
@@ -252,9 +295,23 @@ export default function App() {
                 if (ore === '💎') {
                    setMiningGame(true)
                 } else {
-                   const prizes = ['XP +10', 'Found a Ruby!', 'Nothing here...', 'A secret key!', 'Golden Nugget!', 'Coal...']
+                   const prizes = [
+                     { name: 'Found a Ruby!', item: '💎', money: 50 },
+                     { name: 'Nothing here...', item: null, money: 0 },
+                     { name: 'A secret key!', item: '🗝️', money: 0 },
+                     { name: 'Golden Nugget!', item: '⚜️', money: 100 },
+                     { name: 'Coal...', item: '⚫', money: 1 }
+                   ]
                    const prize = prizes[Math.floor(Math.random() * prizes.length)]
-                   alert(`You mined ${ore}! ${prize}`)
+                   
+                   if (prize.money > 0) addMoney(prize.money)
+                   if (prize.item) {
+                     const added = addToInventory(prize.item)
+                     if (added) alert(`${prize.name} Added to inventory!`)
+                     else alert(`${prize.name} Inventory full!`)
+                   } else {
+                     alert(prize.name)
+                   }
                 }
               }}
             >
@@ -267,22 +324,21 @@ export default function App() {
   )
 
   return (
-    <>
-      <SoundBar />
+    <div className={theme === 'gameboy' ? 'theme-gameboy' : ''}>
+      <PlayerHUD isShaking={isShaking} />
+      <BlackberryPhone />
       <Chameleon section={section} />
       <KonamiPortal visible={portal} onClose={() => setPortal(false)} />
       {miningGame && <MiningGame onClose={() => setMiningGame(false)} />}
       <div className="hud">
         <span className="badge">{isDay ? '☀️ Sun' : '🌙 Moon'} SA Time</span>
       </div>
-      {/* Animated Elements */}
       <AnimatePresence>
         {section === 'sky' && <SkyExtras />}
         {section === 'jungle' && <JungleExtras />}
       </AnimatePresence>
 
       <div className="world" style={{ height: '600vh' }}>
-        {/* Parallax Backgrounds */}
         <BgLayer img={skyBg} y={skyY} zIndex={0} top="0" />
         <BgLayer img={jhbBg} y={jhbY} x={jhbX} zIndex={0} top="100vh" blend />
         <BgLayer img={cleBg} y={cleY} x={cleX} zIndex={0} top="200vh" />
@@ -303,7 +359,7 @@ export default function App() {
           {mineshaftSection}
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
@@ -386,6 +442,7 @@ function JungleExtras() {
 }
 
 function MiningGame({ onClose }) {
+  const { addMoney } = useGame()
   const [score, setScore] = useState(0)
   const [timeLeft, setTimeLeft] = useState(10)
 
@@ -393,8 +450,13 @@ function MiningGame({ onClose }) {
     if (timeLeft > 0) {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
       return () => clearTimeout(timer)
+    } else {
+      // Reward on finish
+      if (score > 0) {
+        addMoney(score * 10)
+      }
     }
-  }, [timeLeft])
+  }, [timeLeft, score, addMoney])
 
   return (
     <div style={{
@@ -430,6 +492,7 @@ function MiningGame({ onClose }) {
       ) : (
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: 24, marginBottom: 20 }}>Time's Up! You mined {score} gems.</div>
+          <div style={{ color: '#ffd700', marginBottom: 20 }}>+ {score * 10} Coins</div>
           <button className="pixel-button" onClick={onClose}>Close</button>
         </div>
       )}

@@ -143,7 +143,7 @@ body {
   background: #252525;
   border-color: var(--accent);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0,255,208,0.15);
+  box-shadow: 6px 16px rgba(0,255,208,0.15);
 }
 .socials {
   display: flex;
@@ -160,4 +160,11 @@ body {
   place-items: center;
   background: #0f0f0f;
   box-shadow: 0 0 0 2px #222;
+}
+
+/* GameBoy Theme */
+.theme-gameboy {
+  filter: sepia(100%) hue-rotate(80deg) saturate(300%) contrast(0.9);
+  transition: filter 1s ease;
+  min-height: 100vh;
 }
