@@ -12,6 +12,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: 'VT323', monospace;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
   cursor: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><rect x=\"1\" y=\"1\" width=\"4\" height=\"4\" fill=\"%23ff3\"/><rect x=\"6\" y=\"6\" width=\"3\" height=\"3\" fill=\"%23f0f\"/><rect x=\"10\" y=\"10\" width=\"2\" height=\"2\" fill=\"%230ff\"/></svg>'), auto;
 }
 .pixel {
