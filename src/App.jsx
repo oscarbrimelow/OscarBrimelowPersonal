@@ -6,7 +6,6 @@ import RetroDialog from './components/RetroDialog.jsx'
 import SocialIcons from './components/SocialIcons.jsx'
 import ProjectCards from './components/ProjectCards.jsx'
 import KonamiPortal from './components/KonamiPortal.jsx'
-import PixelAvatar from './components/PixelAvatar.jsx'
 import useKonami from './hooks/useKonami.js'
 import { isDayInSouthAfrica, ageFromDOB } from './utils/time.js'
 import { play } from './audio/engine.js'
@@ -263,15 +262,6 @@ export default function App() {
             </button>
           ))}
         </div>
-
-        <div style={{ marginTop: 40 }}>
-           <div className="title" style={{ fontSize: 20 }}>Notebook</div>
-           <Notebook />
-        </div>
-
-        <div style={{ marginTop: 24 }}>
-           <ImdbMarquee />
-        </div>
       </div>
     </div>
   )
@@ -280,7 +270,6 @@ export default function App() {
     <>
       <SoundBar />
       <Chameleon section={section} />
-      <PixelAvatar section={section} />
       <KonamiPortal visible={portal} onClose={() => setPortal(false)} />
       {miningGame && <MiningGame onClose={() => setMiningGame(false)} />}
       <div className="hud">
@@ -444,62 +433,6 @@ function MiningGame({ onClose }) {
           <button className="pixel-button" onClick={onClose}>Close</button>
         </div>
       )}
-    </div>
-  )
-}
-
-function Notebook() {
-  const [text, setText] = useState(() => localStorage.getItem('notebook') || '')
-  useEffect(() => { localStorage.setItem('notebook', text) }, [text])
-  return (
-    <textarea
-      value={text}
-      onChange={e => setText(e.target.value)}
-      placeholder="Random thoughts..."
-      style={{
-        width: 'min(800px, 92vw)',
-        height: 120,
-        background: '#0c0c0c',
-        border: '3px solid #2b2b2b',
-        borderRadius: 8,
-        color: '#eaffff',
-        padding: 12,
-        fontFamily: 'VT323, monospace',
-        fontSize: 18,
-        marginTop: 10
-      }}
-    />
-  )
-}
-
-function ImdbMarquee() {
-  const [items] = useState([
-    'Blade Runner',
-    'Rick & Morty',
-    'Everything Everywhere All at Once',
-    'The Matrix',
-    'Interstellar'
-  ])
-  return (
-    <div style={{ width: 'min(800px, 92vw)' }}>
-      <div style={{
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        border: '3px solid #2b2b2b',
-        borderRadius: 8,
-        padding: '8px 12px',
-        background: '#0c0c0c'
-      }}>
-        <motion.div
-          initial={{ x: '100%' }}
-          animate={{ x: '-100%' }}
-          transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-        >
-          {items.map((it, i) => (
-            <span key={i} style={{ marginRight: 36, fontSize: 18 }}>🎬 {it}</span>
-          ))}
-        </motion.div>
-      </div>
     </div>
   )
 }
