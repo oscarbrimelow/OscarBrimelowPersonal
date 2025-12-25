@@ -21,7 +21,7 @@ import tardisCursor from './assets/tardis-cursor.svg'
 
 export default function App() {
   const { scrollY } = useScroll()
-  const [vh, setVh] = useState(0)
+  const [vh, setVh] = useState(window.innerHeight)
 
   useEffect(() => {
     const updateVh = () => setVh(window.innerHeight)
@@ -31,14 +31,15 @@ export default function App() {
   }, [])
 
   // Parallax Logic:
-  // Move at 0.2x speed (slower parallax = less gap opening).
-  // Formula: y = scrollY * 0.2 - (startOffset * 0.2)
-  const skyY = useTransform(scrollY, v => v * 0.2)
-  const jhbY = useTransform(scrollY, v => v * 0.2 - (vh * 1) * 0.2)
-  const cleY = useTransform(scrollY, v => v * 0.2 - (vh * 2) * 0.2)
-  const iomY = useTransform(scrollY, v => v * 0.2 - (vh * 3) * 0.2)
-  const jungleY = useTransform(scrollY, v => v * 0.2 - (vh * 4) * 0.2)
-  const mineshaftY = useTransform(scrollY, v => v * 0.2 - (vh * 5) * 0.2)
+  // Move at 0.15x speed (slower parallax = keeps images visible longer).
+  // Formula: y = scrollY * 0.15 - (startOffset * 0.15)
+  const parallaxFactor = 0.15
+  const skyY = useTransform(scrollY, v => v * parallaxFactor)
+  const jhbY = useTransform(scrollY, v => v * parallaxFactor - (vh * 1) * parallaxFactor)
+  const cleY = useTransform(scrollY, v => v * parallaxFactor - (vh * 2) * parallaxFactor)
+  const iomY = useTransform(scrollY, v => v * parallaxFactor - (vh * 3) * parallaxFactor)
+  const jungleY = useTransform(scrollY, v => v * parallaxFactor - (vh * 4) * parallaxFactor)
+  const mineshaftY = useTransform(scrollY, v => v * parallaxFactor - (vh * 5) * parallaxFactor)
 
   const [section, setSection] = useState('sky')
   const [dialog, setDialog] = useState(null)
