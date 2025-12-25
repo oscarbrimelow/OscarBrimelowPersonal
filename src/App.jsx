@@ -29,15 +29,14 @@ export default function App() {
   }, [])
 
   // Parallax Logic:
-  // Move at 0.5x speed.
-  // Formula: y = scrollY * 0.5 - (startOffset * 0.5)
-  // This ensures that when scrollY == startOffset, y == 0, so the image is exactly in place.
-  const skyY = useTransform(scrollY, v => v * 0.5)
-  const jhbY = useTransform(scrollY, v => v * 0.5 - (vh * 1) * 0.5)
-  const cleY = useTransform(scrollY, v => v * 0.5 - (vh * 2) * 0.5)
-  const iomY = useTransform(scrollY, v => v * 0.5 - (vh * 3) * 0.5)
-  const jungleY = useTransform(scrollY, v => v * 0.5 - (vh * 4) * 0.5)
-  const mineshaftY = useTransform(scrollY, v => v * 0.5 - (vh * 5) * 0.5)
+  // Move at 0.2x speed (slower parallax = less gap opening).
+  // Formula: y = scrollY * 0.2 - (startOffset * 0.2)
+  const skyY = useTransform(scrollY, v => v * 0.2)
+  const jhbY = useTransform(scrollY, v => v * 0.2 - (vh * 1) * 0.2)
+  const cleY = useTransform(scrollY, v => v * 0.2 - (vh * 2) * 0.2)
+  const iomY = useTransform(scrollY, v => v * 0.2 - (vh * 3) * 0.2)
+  const jungleY = useTransform(scrollY, v => v * 0.2 - (vh * 4) * 0.2)
+  const mineshaftY = useTransform(scrollY, v => v * 0.2 - (vh * 5) * 0.2)
 
   const [section, setSection] = useState('sky')
   const [dialog, setDialog] = useState(null)
@@ -257,7 +256,7 @@ function BgLayer({ img, y, top }) {
         top: top,
         left: 0,
         width: '100%',
-        height: '100vh',
+        height: '105vh',
         objectFit: 'cover',
         objectPosition: 'center',
         zIndex: 0,
