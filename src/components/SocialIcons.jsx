@@ -1,11 +1,16 @@
 import { play } from '../audio/engine'
+import instaLogo from '../assets/instalogo.png'
+import githubLogo from '../assets/githublogo.png'
+import discordLogo from '../assets/discordlogo.png'
+import facebookLogo from '../assets/facebooklogo.png'
+import youtubeLogo from '../assets/youtubelogo.png'
 
 const links = [
-  { href: 'https://instagram.com/oscarbrimelow/', label: 'IG', emoji: '📸' },
-  { href: 'https://github.com/oscarbrimelow', label: 'GH', emoji: '🐙' },
-  { href: 'https://discord.com/users/oscarza', label: 'DC', emoji: '💬' },
-  { href: 'https://facebook.com/oscar.brimelow', label: 'FB', emoji: '📘' },
-  { href: 'https://youtube.com/channel/UC6iU7m1r682I4ZPNS9W_bNA', label: 'YT', emoji: '▶️' }
+  { href: 'https://instagram.com/oscarbrimelow/', label: 'IG', icon: instaLogo },
+  { href: 'https://github.com/oscarbrimelow', label: 'GH', icon: githubLogo },
+  { href: 'https://discord.com/users/oscarza', label: 'DC', icon: discordLogo },
+  { href: 'https://facebook.com/oscar.brimelow', label: 'FB', icon: facebookLogo },
+  { href: 'https://youtube.com/channel/UC6iU7m1r682I4ZPNS9W_bNA', label: 'YT', icon: youtubeLogo }
 ]
 
 export default function SocialIcons() {
@@ -31,15 +36,28 @@ export default function SocialIcons() {
           title={item.label}
           aria-label={item.label}
           style={{ 
-             fontSize: 32, 
+             width: 48,
+             height: 48,
              textDecoration: 'none', 
              transition: 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
              display: 'inline-block',
              transform: `rotate(${i % 2 === 0 ? 3 : -3}deg)`,
-             margin: '0 8px'
+             margin: '0 8px',
+             background: 'none',
+             border: 'none',
+             boxShadow: 'none'
           }}
         >
-          {item.emoji}
+          <img 
+            src={item.icon} 
+            alt={item.label} 
+            style={{ 
+              width: '100%', 
+              height: '100%', 
+              objectFit: 'contain',
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' 
+            }} 
+          />
         </a>
       ))}
     </div>
