@@ -31,7 +31,7 @@ export default function WorldGuide({ onClose }) {
           alignItems: 'center',
           justifyContent: 'center'
         }}
-        onClick={e => e.stopPropagation()}
+        // Removed stopPropagation to allow clicking anywhere to close
       >
         {/* Thought Bubble Container */}
         <div style={{ 
@@ -65,7 +65,7 @@ export default function WorldGuide({ onClose }) {
             color: '#ffffff',
             textShadow: '0 2px 4px rgba(0,0,0,0.8)',
             fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(16px, 2.5vw, 20px)',
+            fontSize: 'clamp(14px, 2vw, 18px)',
             fontWeight: 500,
             textAlign: 'center',
             display: 'flex',
@@ -74,7 +74,7 @@ export default function WorldGuide({ onClose }) {
             scrollbarWidth: 'none',
             msOverflowStyle: 'none'
           }}>
-             <h3 style={{ margin: 0, fontFamily: "'Press Start 2P', cursive", fontSize: 'clamp(18px, 3vw, 24px)', color: '#00ffd0', textShadow: '2px 2px 0 #000' }}>WORLD GUIDE</h3>
+             <h3 style={{ margin: 0, fontFamily: "'Press Start 2P', cursive", fontSize: 'clamp(16px, 2.5vw, 22px)', color: '#00ffd0', textShadow: '2px 2px 0 #000' }}>WORLD GUIDE</h3>
              <p style={{ margin: 0 }}><strong>Welcome, Traveler.</strong></p>
              <p style={{ margin: 0 }}>This is an interactive parallax world. Scroll to explore different biomes.</p>
              <ul style={{ textAlign: 'left', paddingLeft: 20, margin: '5px 0', listStyle: 'none' }}>
