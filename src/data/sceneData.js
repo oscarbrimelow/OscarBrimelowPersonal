@@ -57,6 +57,17 @@ export const sceneData = {
         icon: '🛑',
         type: 'inspect',
         message: 'Street Sign: "Caution: Developers at work"'
+      },
+      {
+        id: 'jhb_ponte',
+        x: 75,
+        y: 35,
+        width: 10,
+        height: 30,
+        type: 'landmark',
+        name: 'Ponte City',
+        image: 'https://images.unsplash.com/photo-1577083288073-40892c0860a4?q=80&w=1000&auto=format&fit=crop',
+        description: 'Ponte City is the tallest residential skyscraper in Africa. A brutalist icon of the Johannesburg skyline.'
       }
     ]
   },
@@ -89,6 +100,17 @@ export const sceneData = {
         icon: '🕹️',
         type: 'inspect',
         message: 'A vintage Pac-Man machine. High Score: OSCAR'
+      },
+      {
+        id: 'cle_terminal_tower',
+        x: 45,
+        y: 30,
+        width: 15,
+        height: 40,
+        type: 'landmark',
+        name: 'Terminal Tower',
+        image: 'https://images.unsplash.com/photo-1626125345510-4603468eedfb?q=80&w=1000&auto=format&fit=crop',
+        description: 'The Terminal Tower is a 52-story landmark skyscraper located on Public Square in downtown Cleveland.'
       }
     ]
   },

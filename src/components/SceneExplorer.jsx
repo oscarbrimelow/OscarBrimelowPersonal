@@ -10,6 +10,7 @@ export default function SceneExplorer({ sceneId, bgImage, onClose }) {
   const [targetPos, setTargetPos] = useState({ x: 50, y: 80 })
   const [facingRight, setFacingRight] = useState(true)
   const [transition, setTransition] = useState({ duration: 0 })
+  const [activeLandmark, setActiveLandmark] = useState(null)
   
   // We track the last position to calculate speed (distance / time)
   // This ensures the character moves at a constant walking pace
@@ -59,12 +60,14 @@ export default function SceneExplorer({ sceneId, bgImage, onClose }) {
         }
     } else if (item.type === 'inspect') {
         alert(item.message)
+    } else if (item.type === 'landmark') {
+        setActiveLandmark(item)
     }
   }
 
   const currentItems = sceneData[sceneId]?.items || []
   const visibleItems = currentItems.filter(item => 
-    item.type === 'inspect' || !collectedSceneItems.includes(item.id)
+    item.type === 'inspect' || item.type === 'landmark' || !collectedSceneItems.includes(item.id)
   )
 
   return (
@@ -216,6 +219,49 @@ export default function SceneExplorer({ sceneId, bgImage, onClose }) {
           />
         </div>
       </div>
+
+      {activeLandmark && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, width: '100%', height: '100%',
+          background: 'rgba(0,0,0,0.8)',
+          zIndex: 5000,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 20
+        }} onClick={() => setActiveLandmark(null)}>
+          <motion.div 
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            style={{
+              background: '#222',
+              border: '4px solid white',
+              padding: 20,
+              maxWidth: 600,
+              width: '100%',
+              color: 'white',
+              position: 'relative',
+              textAlign: 'center',
+              boxShadow: '0 0 20px rgba(0,0,0,0.5)'
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div style={{ fontSize: 20, marginBottom: 16, fontFamily: "'Press Start 2P', cursive", color: '#00ffd0' }}>{activeLandmark.name}</div>
+            {activeLandmark.image && (
+              <img 
+                src={activeLandmark.image} 
+                alt={activeLandmark.name} 
+                style={{ width: '100%', height: 'auto', maxHeight: '40vh', objectFit: 'cover', marginBottom: 16, border: '2px solid #555' }}
+              />
+            )}
+            <div style={{ fontSize: 16, lineHeight: 1.5, marginBottom: 20, fontFamily: 'monospace' }}>
+              {activeLandmark.description}
+            </div>
+            <button className="pixel-button" onClick={() => setActiveLandmark(null)}>CLOSE</button>
+          </motion.div>
+        </div>
+      )}
     </motion.div>
   )
 }
