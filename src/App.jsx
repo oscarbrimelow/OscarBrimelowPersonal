@@ -257,7 +257,7 @@ function BgLayer({ img, y, top }) {
         top: top,
         left: 0,
         width: '100%',
-        height: '120vh',
+        height: '100vh',
         objectFit: 'cover',
         objectPosition: 'center',
         zIndex: 0,
