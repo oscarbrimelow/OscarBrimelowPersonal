@@ -44,96 +44,116 @@ export default function SceneExplorer({ sceneId, bgImage, onClose }) {
         top: 0, left: 0, right: 0, bottom: 0,
         zIndex: 4000,
         background: '#000',
-        overflow: 'hidden'
+        overflow: 'hidden' // Main container is fixed, inner is scrollable
       }}
     >
-      {/* Interactive Background Layer */}
-      <div 
-        style={{
-          width: '100%',
-          height: '100%',
-          backgroundImage: `url(${bgImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          position: 'relative',
-          cursor: 'crosshair'
-        }}
-        onClick={handleSceneClick}
-      >
-        {/* HUD: Close Button */}
-        <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 50 }}>
-          <button 
-            className="pixel-button"
-            onClick={(e) => {
-              e.stopPropagation()
-              play('blip')
-              onClose()
-            }}
-            style={{ 
-              background: 'rgba(255, 0, 0, 0.8)', 
-              color: 'white',
-              border: '2px solid white',
-              boxShadow: '4px 4px 0 rgba(0,0,0,0.5)'
-            }}
-          >
-            ❌ EXIT SCENE
-          </button>
-        </div>
-
-        {/* HUD: Instruction */}
-        <div style={{
-            position: 'absolute', 
-            bottom: 20, 
-            left: '50%', 
-            transform: 'translateX(-50%)',
+      {/* HUD: Close Button (Fixed Overlay) */}
+      <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 50 }}>
+        <button 
+          className="pixel-button"
+          onClick={(e) => {
+            e.stopPropagation()
+            play('blip')
+            onClose()
+          }}
+          style={{ 
+            background: 'rgba(255, 0, 0, 0.8)', 
             color: 'white',
-            textShadow: '0 2px 4px black',
-            fontFamily: "'Press Start 2P', cursive",
-            fontSize: '12px',
-            pointerEvents: 'none',
-            opacity: 0.8
-        }}>
-            CLICK TO MOVE
-        </div>
-
-        {/* The Player Character */}
-        <motion.img
-          src={me8bit}
-          alt="Explorer"
-          animate={{ 
-            left: `${targetPos.x}%`, 
-            top: `${targetPos.y}%` 
+            border: '2px solid white',
+            boxShadow: '4px 4px 0 rgba(0,0,0,0.5)'
           }}
-          transition={transition}
+        >
+          ❌ EXIT SCENE
+        </button>
+      </div>
+
+      {/* HUD: Instruction (Fixed Overlay) */}
+      <div style={{
+          position: 'absolute', 
+          bottom: 20, 
+          left: '50%', 
+          transform: 'translateX(-50%)',
+          color: 'white',
+          textShadow: '0 2px 4px black',
+          fontFamily: "'Press Start 2P', cursive",
+          fontSize: '12px',
+          pointerEvents: 'none',
+          opacity: 0.8,
+          zIndex: 50
+      }}>
+          CLICK TO MOVE • SCROLL TO EXPLORE
+      </div>
+
+      {/* Scrollable Content Wrapper */}
+      <div style={{ 
+          width: '100%', 
+          height: '100%', 
+          overflow: 'auto',
+          display: 'flex',            // centers image if smaller than screen
+          justifyContent: 'center',   // centers image horizontally
+          alignItems: 'flex-start'    // aligns top
+      }}>
+        {/* Scene Container (Relative for absolute children) */}
+        <div 
           style={{
-            position: 'absolute',
-            width: 'clamp(60px, 10vw, 120px)', // Responsive size
-            height: 'auto',
-            transform: `translate(-50%, -95%) scaleX(${facingRight ? 1 : -1})`, // Anchor at feet
-            filter: 'drop-shadow(0 10px 10px rgba(0,0,0,0.5))',
-            pointerEvents: 'none', // Allow clicks to pass through to background
-            zIndex: 10
+            position: 'relative',
+            width: '100%',
+            maxWidth: '100%', // Ensure it doesn't overflow horizontally unintentionally
+            cursor: 'crosshair'
           }}
-        />
+          onClick={handleSceneClick}
+        >
+          <img 
+            src={bgImage} 
+            alt="Scene Background"
+            style={{ 
+              width: '100%', 
+              height: 'auto', 
+              display: 'block',
+              pointerEvents: 'none' // Clicks pass to the container div
+            }} 
+            draggable={false}
+          />
 
-        {/* Click Target Indicator (Visual Feedback) */}
-        <motion.div
-            key={`${targetPos.x}-${targetPos.y}`} // Remounts animation on new click
-            initial={{ opacity: 1, scale: 0 }}
-            animate={{ opacity: 0, scale: 2 }}
-            transition={{ duration: 0.5 }}
-            style={{
-                position: 'absolute',
-                left: `${targetPos.x}%`,
-                top: `${targetPos.y}%`,
-                width: 20,
-                height: 20,
-                border: '3px solid rgba(255, 255, 255, 0.8)',
-                borderRadius: '50%',
-                transform: 'translate(-50%, -50%)',
-                pointerEvents: 'none'
+          {/* The Player Character */}
+          <motion.img
+            src={me8bit}
+            alt="Explorer"
+            animate={{ 
+              left: `${targetPos.x}%`, 
+              top: `${targetPos.y}%` 
             }}
-        />
+            transition={transition}
+            style={{
+              position: 'absolute',
+              width: 'clamp(60px, 10vw, 120px)', // Responsive size
+              height: 'auto',
+              transform: `translate(-50%, -95%) scaleX(${facingRight ? 1 : -1})`, // Anchor at feet
+              filter: 'drop-shadow(0 10px 10px rgba(0,0,0,0.5))',
+              pointerEvents: 'none', // Allow clicks to pass through
+              zIndex: 10
+            }}
+          />
+
+          {/* Click Target Indicator (Visual Feedback) */}
+          <motion.div
+              key={`${targetPos.x}-${targetPos.y}`} // Remounts animation on new click
+              initial={{ opacity: 1, scale: 0 }}
+              animate={{ opacity: 0, scale: 2 }}
+              transition={{ duration: 0.5 }}
+              style={{
+                  position: 'absolute',
+                  left: `${targetPos.x}%`,
+                  top: `${targetPos.y}%`,
+                  width: 20,
+                  height: 20,
+                  border: '3px solid rgba(255, 255, 255, 0.8)',
+                  borderRadius: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  pointerEvents: 'none'
+              }}
+          />
+        </div>
       </div>
     </motion.div>
   )
