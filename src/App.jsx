@@ -372,10 +372,10 @@ function MainGame() {
 
         <div style={{ position: 'relative', zIndex: 10 }}>
           {skySection}
-          <motion.div style={{ x: jhbX, y: jhbY }}>
+          <motion.div style={{ x: jhbX, y: jhbY, opacity: jhbOpacity }}>
             {jhbSection}
           </motion.div>
-          <motion.div style={{ x: cleX, y: cleY }}>
+          <motion.div style={{ x: cleX, y: cleY, opacity: cleOpacity }}>
             {cleSection}
           </motion.div>
           {iomSection}

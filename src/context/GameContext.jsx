@@ -96,6 +96,44 @@ export function GameProvider({ children }) {
         message = 'It is just coal... (No effect)'
         used = true // Consume it to get rid of it? Or keep it? Let's consume.
         break
+      case '🥩':
+        setHealth(h => Math.min(100, h + 15))
+        message = 'Yum! Biltong is the best coding snack. (+15 HP)'
+        used = true
+        break
+      case '🍵':
+        setHealth(h => Math.min(100, h + 15))
+        message = 'Refreshing Rooibos tea. (+15 HP)'
+        used = true
+        break
+      case '🥟':
+        setHealth(h => Math.min(100, h + 20))
+        message = 'Delicious Pierogis! (+20 HP)'
+        used = true
+        break
+      case '🪙':
+        addMoney(100)
+        message = 'Sold the rare coin for $100!'
+        used = true
+        break
+      case '🏍️':
+        message = 'Vroom Vroom! It is a model of a TT Bike.'
+        used = false // Keep it as a souvenir?
+        break
+      case '🥭':
+        setHealth(h => Math.min(100, h + 20))
+        message = 'Juicy Jungle Mango! (+20 HP)'
+        used = true
+        break
+      case '🗿':
+        addMoney(1000)
+        message = 'You sold the Ancient Idol to a museum for $1000!'
+        used = true
+        break
+      case '⛏️':
+        message = 'You can use this in the mineshaft!'
+        used = false
+        break
       default:
         message = 'This item cannot be used.'
     }
