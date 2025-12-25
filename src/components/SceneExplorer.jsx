@@ -2,8 +2,11 @@ import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import me8bit from '../assets/me8bit.png'
 import { play } from '../audio/engine'
+import { sceneData } from '../data/sceneData'
+import { useGame } from '../context/GameContext'
 
 export default function SceneExplorer({ sceneId, bgImage, onClose }) {
+  const { addToInventory, addMoney, markItemAsCollected, collectedSceneItems } = useGame()
   const [targetPos, setTargetPos] = useState({ x: 50, y: 80 })
   const [facingRight, setFacingRight] = useState(true)
   const [transition, setTransition] = useState({ duration: 0 })
@@ -32,6 +35,37 @@ export default function SceneExplorer({ sceneId, bgImage, onClose }) {
     // Play sound
     play('blip')
   }
+
+  const handleItemClick = (e, item) => {
+    e.stopPropagation() // Prevent walking when clicking an item
+    play('collect')
+
+    if (item.type === 'collectible') {
+        const added = markItemAsCollected(item.id)
+        if (added) {
+            if (item.item) {
+                const invAdded = addToInventory(item.item)
+                if (invAdded) {
+                    alert(`${item.message}`)
+                } else {
+                    alert(`Inventory Full! Could not pick up ${item.name}.`)
+                    // TODO: Revert collected status if inventory full? 
+                    // For now, let's assume if inventory is full, it's gone. 
+                    // Actually, markItemAsCollected returns true if it WASNT collected before.
+                }
+            } else {
+                alert(item.message)
+            }
+        }
+    } else if (item.type === 'inspect') {
+        alert(item.message)
+    }
+  }
+
+  const currentItems = sceneData[sceneId]?.items || []
+  const visibleItems = currentItems.filter(item => 
+    item.type === 'inspect' || !collectedSceneItems.includes(item.id)
+  )
 
   return (
     <motion.div
@@ -114,6 +148,33 @@ export default function SceneExplorer({ sceneId, bgImage, onClose }) {
             }} 
             draggable={false}
           />
+
+          {/* Render Items */}
+          {visibleItems.map(item => (
+            <motion.div
+              key={item.id}
+              whileHover={{ scale: 1.2, rotate: 5 }}
+              whileTap={{ scale: 0.9 }}
+              style={{
+                position: 'absolute',
+                left: `${item.x}%`,
+                top: `${item.y}%`,
+                width: item.width ? `${item.width}%` : 'auto',
+                height: item.height ? `${item.height}%` : 'auto',
+                fontSize: '2rem',
+                cursor: 'pointer',
+                zIndex: 20, // Above character
+                transform: 'translate(-50%, -50%)',
+                filter: 'drop-shadow(0 0 5px white)'
+              }}
+              onClick={(e) => handleItemClick(e, item)}
+            >
+              {item.icon || (
+                 // Invisible hit area if no icon
+                 <div style={{ width: '100%', height: '100%', background: 'transparent' }} />
+              )}
+            </motion.div>
+          ))}
 
           {/* The Player Character */}
           <motion.img

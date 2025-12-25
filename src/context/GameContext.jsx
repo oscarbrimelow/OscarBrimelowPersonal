@@ -17,9 +17,18 @@ export function GameProvider({ children }) {
 
   const [godMode, setGodMode] = useState(false)
   const [hasSecretApp, setHasSecretApp] = useState(false)
+  const [collectedSceneItems, setCollectedSceneItems] = useState([]) // Array of IDs
 
   // Actions
   const addMoney = (amount) => setMoney(m => m + amount)
+
+  const markItemAsCollected = (itemId) => {
+    if (!collectedSceneItems.includes(itemId)) {
+      setCollectedSceneItems(prev => [...prev, itemId])
+      return true
+    }
+    return false
+  }
   
   const spendMoney = (amount) => {
     if (money >= amount) {
@@ -148,7 +157,9 @@ export function GameProvider({ children }) {
     spendMoney,
     useItem,
     godMode,
-    hasSecretApp
+    hasSecretApp,
+    collectedSceneItems,
+    markItemAsCollected
   }
 
   return (
