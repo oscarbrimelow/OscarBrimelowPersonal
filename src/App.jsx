@@ -286,11 +286,11 @@ export default function App() {
       <div className="world" style={{ height: '600vh' }}>
         {/* Parallax Backgrounds */}
         <BgLayer img={skyBg} y={skyY} zIndex={0} top="0" />
-        <BgLayer img={jhbBg} y={jhbY} zIndex={0} top="100vh" />
-        <BgLayer img={cleBg} y={cleY} zIndex={0} top="200vh" />
-        <BgLayer img={iomBg} y={iomY} zIndex={0} top="300vh" />
-        <BgLayer img={jungleBg} y={jungleY} zIndex={0} top="400vh" />
-        <BgLayer img={mineshaftBg} y={mineshaftY} zIndex={0} top="500vh" />
+        <BgLayer img={jhbBg} y={jhbY} zIndex={0} top="100vh" blend />
+        <BgLayer img={cleBg} y={cleY} zIndex={0} top="200vh" blend />
+        <BgLayer img={iomBg} y={iomY} zIndex={0} top="300vh" blend />
+        <BgLayer img={jungleBg} y={jungleY} zIndex={0} top="400vh" blend />
+        <BgLayer img={mineshaftBg} y={mineshaftY} zIndex={0} top="500vh" blend />
 
         <div style={{ position: 'relative', zIndex: 10 }}>
           {skySection}
@@ -305,7 +305,7 @@ export default function App() {
   )
 }
 
-function BgLayer({ img, y, top }) {
+function BgLayer({ img, y, top, blend }) {
   return (
     <motion.img 
       src={img}
@@ -315,13 +315,15 @@ function BgLayer({ img, y, top }) {
         top: top,
         left: 0,
         width: '100%',
-        height: '105vh',
+        height: '120vh',
         objectFit: 'cover',
         objectPosition: 'center',
         zIndex: 0,
         pointerEvents: 'none',
         y: y,
-        willChange: 'transform'
+        willChange: 'transform',
+        maskImage: blend ? 'linear-gradient(to bottom, transparent 0%, black 20%, black 100%)' : undefined,
+        WebkitMaskImage: blend ? 'linear-gradient(to bottom, transparent 0%, black 20%, black 100%)' : undefined
       }}
     />
   )
