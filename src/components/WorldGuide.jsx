@@ -56,23 +56,21 @@ export default function WorldGuide({ onClose }) {
           {/* Text Content inside Bubble */}
           <div style={{
             position: 'absolute',
-            top: '48%', 
+            top: '50%', 
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width: '60%',
             height: '55%',
             overflowY: 'auto',
             color: '#000',
-            background: 'rgba(255,255,255,0.85)',
-            borderRadius: '20px',
-            padding: '20px',
             fontFamily: "'Inter', sans-serif",
             fontSize: 'clamp(14px, 2vw, 16px)',
             textAlign: 'center',
             display: 'flex',
             flexDirection: 'column',
             gap: 12,
-            boxShadow: 'inset 0 0 20px rgba(255,255,255,0.5)'
+            scrollbarWidth: 'none', // Hide scrollbar for cleaner look
+            msOverflowStyle: 'none'
           }}>
              <h3 style={{ margin: 0, fontFamily: "'Press Start 2P', cursive", fontSize: 18, color: '#222' }}>WORLD GUIDE</h3>
              <p style={{ margin: 0 }}><strong>Welcome, Traveler.</strong></p>
@@ -91,10 +89,10 @@ export default function WorldGuide({ onClose }) {
           src={me8bit} 
           alt="Oscar 8-bit" 
           style={{ 
-            height: '220px',
+            height: '400px',
             alignSelf: 'flex-start',
-            marginLeft: '15%',
-            marginTop: '-60px',
+            marginLeft: '5%',
+            marginTop: '-120px',
             filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))',
             zIndex: 10
           }} 
