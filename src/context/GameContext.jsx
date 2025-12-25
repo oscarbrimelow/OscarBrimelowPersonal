@@ -18,6 +18,14 @@ export function GameProvider({ children }) {
   // Actions
   const addMoney = (amount) => setMoney(m => m + amount)
   
+  const spendMoney = (amount) => {
+    if (money >= amount) {
+      setMoney(m => m - amount)
+      return true
+    }
+    return false
+  }
+
   const addToInventory = (item) => {
     if (inventory.length < 3 && !inventory.includes(item)) {
       setInventory(prev => [...prev, item])
