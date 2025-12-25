@@ -10,9 +10,9 @@ import useKonami from './hooks/useKonami.js'
 import { isDayInSouthAfrica, ageFromDOB } from './utils/time.js'
 import { play } from './audio/engine.js'
 
-import skyBg from '../public/sky-bg.png'
-import cityBg from '../public/city-bg.png'
-import jungleBg from '../public/jungle-bg.png'
+import skyBg from './assets/sky-bg.png'
+import cityBg from './assets/city-bg.png'
+import jungleBg from './assets/jungle-bg.png'
 
 export default function App() {
   const { scrollYProgress } = useScroll()
