@@ -38,13 +38,11 @@ export default function App() {
   // Custom Transforms for Slide Effect (JHB -> CLE)
   // JHB: Standard parallax until vh, then slides Left + Pinned Vertical
   const jhbY = useTransform(scrollY, [0, vh, 2*vh], [-vh*0.15, 0, vh])
-  const rawJhbX = useTransform(scrollY, [0, vh, 2*vh], ['0%', '0%', '-100%'])
-  const jhbX = useSpring(rawJhbX, { stiffness: 100, damping: 20, mass: 0.5 })
+  const jhbX = useTransform(scrollY, [0, vh, 2*vh], ['0%', '0%', '-100%'])
 
   // CLE: Starts pinned vertical (but offscreen right) at vh, then slides in
   const cleY = useTransform(scrollY, [0, vh, 2*vh, 3*vh], [-vh*0.3, -vh, 0, vh*0.15])
-  const rawCleX = useTransform(scrollY, [0, vh, 2*vh], ['100%', '100%', '0%'])
-  const cleX = useSpring(rawCleX, { stiffness: 100, damping: 20, mass: 0.5 })
+  const cleX = useTransform(scrollY, [0, vh, 2*vh], ['100%', '100%', '0%'])
 
   // Other sections standard parallax
   const skyY = useTransform(scrollY, v => v * parallaxFactor)
@@ -299,7 +297,7 @@ export default function App() {
         {/* Parallax Backgrounds */}
         <BgLayer img={skyBg} y={skyY} zIndex={0} top="0" />
         <BgLayer img={jhbBg} y={jhbY} x={jhbX} zIndex={0} top="100vh" blend />
-        <BgLayer img={cleBg} y={cleY} x={cleX} zIndex={0} top="200vh" blend />
+        <BgLayer img={cleBg} y={cleY} x={cleX} zIndex={0} top="200vh" />
         <BgLayer img={iomBg} y={iomY} zIndex={0} top="300vh" blend />
         <BgLayer img={jungleBg} y={jungleY} zIndex={0} top="400vh" blend />
         <BgLayer img={mineshaftBg} y={mineshaftY} zIndex={0} top="500vh" blend />
@@ -339,8 +337,8 @@ function BgLayer({ img, y, x, top, blend }) {
         y: y,
         x: x,
         willChange: 'transform',
-        maskImage: blend ? 'linear-gradient(to bottom, transparent 0%, black 40%, black 100%)' : undefined,
-        WebkitMaskImage: blend ? 'linear-gradient(to bottom, transparent 0%, black 40%, black 100%)' : undefined,
+        maskImage: blend ? 'linear-gradient(to bottom, transparent 0%, black 15%, black 100%)' : undefined,
+        WebkitMaskImage: blend ? 'linear-gradient(to bottom, transparent 0%, black 15%, black 100%)' : undefined,
         maskRepeat: 'no-repeat',
         WebkitMaskRepeat: 'no-repeat'
       }}
