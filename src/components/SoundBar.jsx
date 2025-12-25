@@ -10,7 +10,7 @@ export default function SoundBar() {
       className="soundbar" 
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{ position: 'relative', display: 'flex', alignItems: 'center' }}
+      style={{ display: 'flex', alignItems: 'center' }}
     >
       <button
         className="pixel-button"

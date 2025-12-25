@@ -285,7 +285,6 @@ export default function App() {
       {miningGame && <MiningGame onClose={() => setMiningGame(false)} />}
       <div className="hud">
         <span className="badge">{isDay ? '☀️ Sun' : '🌙 Moon'} SA Time</span>
-        <span className="badge">Scroll: Sky → JHB → CLE → IOM → Jungle → Mine</span>
       </div>
       {/* Animated Elements */}
       <AnimatePresence>
