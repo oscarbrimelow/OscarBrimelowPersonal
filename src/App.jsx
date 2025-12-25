@@ -129,35 +129,35 @@ export default function App() {
       </div>
       <div className="world">
         {/* Parallax Layers - Now using Real Images */}
-        <motion.div 
-          className="fixed inset-0 w-full h-[120vh] bg-cover bg-bottom z-0"
-          style={{ 
-            y: skyY,
-            backgroundImage: "url('/sky-bg.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center bottom'
-          }}
-        />
-        <motion.div 
-          className="fixed inset-0 w-full h-[120vh] bg-cover bg-bottom z-0"
-          style={{ 
-            y: cityY,
-            backgroundImage: "url('/city-bg.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center bottom',
-            top: '100vh' // Starts below the sky
-          }}
-        />
-        <motion.div 
-          className="fixed inset-0 w-full h-[150vh] bg-cover bg-top z-0"
-          style={{ 
-            y: jungleY,
-            backgroundImage: "url('/jungle-bg.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center top',
-            top: '200vh' // Starts below the city
-          }}
-        />
+      <motion.div 
+        className="fixed inset-0 w-full h-[120vh] bg-cover bg-bottom z-0"
+        style={{ 
+          y: skyY,
+          backgroundImage: "url('./sky-bg.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center bottom'
+        }}
+      />
+      <motion.div 
+        className="fixed inset-0 w-full h-[120vh] bg-cover bg-bottom z-0"
+        style={{ 
+          y: cityY,
+          backgroundImage: "url('./city-bg.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center bottom',
+          top: '100vh' // Starts below the sky
+        }}
+      />
+      <motion.div 
+        className="fixed inset-0 w-full h-[150vh] bg-cover bg-top z-0"
+        style={{ 
+          y: jungleY,
+          backgroundImage: "url('./jungle-bg.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center top',
+          top: '200vh' // Starts below the city
+        }}
+      />
         <div style={{ position: 'relative' }}>
           {sky}
           {cities}
