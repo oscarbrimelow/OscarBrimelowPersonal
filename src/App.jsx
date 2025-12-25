@@ -10,6 +10,10 @@ import useKonami from './hooks/useKonami.js'
 import { isDayInSouthAfrica, ageFromDOB } from './utils/time.js'
 import { play } from './audio/engine.js'
 
+import skyBg from '../public/sky-bg.png'
+import cityBg from '../public/city-bg.png'
+import jungleBg from '../public/jungle-bg.png'
+
 export default function App() {
   const { scrollYProgress } = useScroll()
   const skyY = useTransform(scrollYProgress, [0, 1], [0, -200])
@@ -133,7 +137,7 @@ export default function App() {
         className="fixed inset-0 w-full h-[120vh] bg-cover bg-bottom z-0"
         style={{ 
           y: skyY,
-          backgroundImage: "url('./sky-bg.png')",
+          backgroundImage: `url(${skyBg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center bottom'
         }}
@@ -142,7 +146,7 @@ export default function App() {
         className="fixed inset-0 w-full h-[120vh] bg-cover bg-bottom z-0"
         style={{ 
           y: cityY,
-          backgroundImage: "url('./city-bg.png')",
+          backgroundImage: `url(${cityBg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center bottom',
           top: '100vh' // Starts below the sky
@@ -152,7 +156,7 @@ export default function App() {
         className="fixed inset-0 w-full h-[150vh] bg-cover bg-top z-0"
         style={{ 
           y: jungleY,
-          backgroundImage: "url('./jungle-bg.png')",
+          backgroundImage: `url(${jungleBg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center top',
           top: '200vh' // Starts below the city
