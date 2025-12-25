@@ -36,14 +36,20 @@ export function GameProvider({ children }) {
   }
 
   const handleChameleonClick = () => {
+    if (theme === 'gameboy') {
+      setTheme('normal')
+      setChameleonClicks(0)
+      play('blip')
+      return
+    }
+
     const newCount = chameleonClicks + 1
     setChameleonClicks(newCount)
     play('blip')
     
     if (newCount === 3) {
       setTheme('gameboy')
-      play('collect') // Or a special secret sound
-      // Revert after some time or toggle? User implies permanent switch "changes the site's entire color palette"
+      play('collect') 
     }
   }
 

@@ -330,9 +330,6 @@ function MainGame() {
       <Chameleon section={section} />
       <KonamiPortal visible={portal} onClose={() => setPortal(false)} />
       {miningGame && <MiningGame onClose={() => setMiningGame(false)} />}
-      <div className="hud">
-        <span className="badge">{isDay ? '☀️ Sun' : '🌙 Moon'} SA Time</span>
-      </div>
       <AnimatePresence>
         {section === 'sky' && <SkyExtras />}
         {section === 'jungle' && <JungleExtras />}
