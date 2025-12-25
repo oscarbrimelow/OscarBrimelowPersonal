@@ -12,6 +12,32 @@ const items = [
 ]
 
 export default function ProjectCards() {
+  const { addMoney } = useGame()
+  const [cooldowns, setCooldowns] = useState({})
+
+  const handleCardClick = (title, href) => {
+    if (cooldowns[title]) {
+      window.open(href, '_blank')
+      return
+    }
+
+    // Give money logic
+    addMoney(10)
+    play('collect')
+    
+    // Set cooldown
+    setCooldowns(prev => ({ ...prev, [title]: true }))
+    setTimeout(() => {
+      setCooldowns(prev => ({ ...prev, [title]: false }))
+    }, 5000) // 5 second cooldown
+
+    // Still open link? User said "clicking on my projects gives you money per click". 
+    // Usually projects open a link. I should probably still open it or maybe just give money if they hold shift? 
+    // The prompt says "clicking on my projects gives you money". It implies the action itself.
+    // I will let it open the link too, so it's a bonus.
+    window.open(href, '_blank')
+  }
+
   return (
     <div className="grid" style={{ gap: '24px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
       {items.map((item, i) => (
@@ -26,7 +52,8 @@ export default function ProjectCards() {
             padding: '16px',
             width: '200px',
             textAlign: 'center',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            position: 'relative'
           }}
           onMouseEnter={(e) => {
             play('blip')
@@ -35,7 +62,28 @@ export default function ProjectCards() {
           onMouseLeave={(e) => {
              e.currentTarget.style.transform = `rotate(${Math.random() * 4 - 2}deg)`
           }}
+          onClick={() => handleCardClick(item.title, item.href)}
         >
+          {cooldowns[item.title] ? null : (
+            <div style={{ 
+              position: 'absolute', 
+              top: -10, 
+              right: -10, 
+              background: '#ffd700', 
+              color: '#000', 
+              borderRadius: '50%', 
+              width: 24, 
+              height: 24, 
+              fontSize: 12, 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              fontWeight: 'bold',
+              boxShadow: '0 0 5px rgba(255, 215, 0, 0.8)'
+            }}>
+              $
+            </div>
+          )}
           <div style={{ fontSize: 32, marginBottom: 8 }}>{item.icon}</div>
           <div className="title" style={{ fontSize: 18, color: item.primary ? '#00ffd0' : '#fff', fontFamily: 'Press Start 2P, cursive', marginBottom: 8 }}>
             {item.title}

@@ -21,9 +21,13 @@ const sounds = {
 }
 
 export function play(name) {
+  if (name !== 'bgm' && sfxMuted) return
   const s = sounds[name]
   if (s) s.play()
 }
+
+let sfxMuted = false
+let musicMuted = false
 
 export function toggleMute() {
   Howler.mute(!Howler._muted)
@@ -31,6 +35,30 @@ export function toggleMute() {
 
 export function isMuted() {
   return !!Howler._muted
+}
+
+export function setGlobalVolume(val) {
+  Howler.volume(val)
+}
+
+export function toggleMusicMute() {
+  musicMuted = !musicMuted
+  if (musicMuted) sounds.bgm.mute(true)
+  else sounds.bgm.mute(false)
+  return musicMuted
+}
+
+export function toggleSfxMute() {
+  sfxMuted = !sfxMuted
+  return sfxMuted
+}
+
+export function isMusicMuted() {
+  return musicMuted
+}
+
+export function isSfxMuted() {
+  return sfxMuted
 }
 
 export function startBgm() {

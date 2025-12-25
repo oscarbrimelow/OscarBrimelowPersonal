@@ -146,21 +146,102 @@ export default function BlackberryPhone() {
                 </div>
               )}
 
+              {activeApp === 'bag' && (
+                <div style={{ textAlign: 'center' }}>
+                  <h4 style={{ color: '#fff', marginBottom: 15 }}>Inventory</h4>
+                  {inventory.length === 0 ? (
+                    <div style={{ color: '#888', marginTop: 20 }}>Bag is empty.</div>
+                  ) : (
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+                      {inventory.map((item, i) => (
+                        <div key={i} style={{ 
+                          width: 50, height: 50, background: '#333', 
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                          fontSize: 24, borderRadius: 8, border: '1px solid #555' 
+                        }}>
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <button className="pixel-button" style={{ marginTop: 20 }} onClick={() => setActiveApp(null)}>Back</button>
+                </div>
+              )}
+
+              {activeApp === 'shop' && (
+                <div style={{ textAlign: 'center' }}>
+                  <h4 style={{ color: '#fff', marginBottom: 15 }}>Dark Web Store</h4>
+                  <div style={{ marginBottom: 10, color: '#ffd700' }}>Cash: ${money}</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {shopItems.map(item => (
+                      <div key={item.name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#333', padding: 8, borderRadius: 8 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <span style={{ fontSize: 20 }}>{item.icon}</span>
+                          <div style={{ textAlign: 'left' }}>
+                            <div style={{ fontSize: 12, color: '#fff' }}>{item.name}</div>
+                            <div style={{ fontSize: 10, color: '#888' }}>{item.desc}</div>
+                          </div>
+                        </div>
+                        <button 
+                          className="pixel-button" 
+                          style={{ padding: '4px 8px', fontSize: 10 }}
+                          onClick={() => handleBuy(item)}
+                        >
+                          ${item.price}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <button className="pixel-button" style={{ marginTop: 20 }} onClick={() => setActiveApp(null)}>Back</button>
+                </div>
+              )}
+
               {activeApp === 'settings' && (
                 <div style={{ textAlign: 'center' }}>
                   <h4 style={{ color: '#fff', marginBottom: 20 }}>Settings</h4>
+                  
+                  <div style={{ marginBottom: 20 }}>
+                    <label style={{ display: 'block', fontSize: 12, marginBottom: 5, color: '#aaa' }}>Master Volume</label>
+                    <input 
+                      type="range" 
+                      min="0" max="1" step="0.1" 
+                      value={volume}
+                      onChange={(e) => {
+                        const v = parseFloat(e.target.value)
+                        setVolume(v)
+                        setGlobalVolume(v)
+                      }}
+                      style={{ width: '100%' }}
+                    />
+                  </div>
+
                   <button 
                     className="pixel-button" 
-                    onClick={() => { toggleMute(); setMuted(isMuted()) }}
-                    style={{ width: '100%', marginBottom: 15 }}
+                    onClick={() => { 
+                      const m = toggleMusicMute()
+                      setMusicMutedState(m)
+                    }}
+                    style={{ width: '100%', marginBottom: 10, background: musicMutedState ? '#552222' : '#1a1a1a' }}
                   >
-                    {muted ? '🔇 Unmute Audio' : '🔊 Mute Audio'}
+                    {musicMutedState ? '🎵 Music: OFF' : '🎵 Music: ON'}
                   </button>
-                  <div style={{ color: '#888', fontSize: 12 }}>
-                    Currently Playing:<br/>
+
+                  <button 
+                    className="pixel-button" 
+                    onClick={() => { 
+                      const m = toggleSfxMute()
+                      setSfxMutedState(m)
+                    }}
+                    style={{ width: '100%', marginBottom: 10, background: sfxMutedState ? '#552222' : '#1a1a1a' }}
+                  >
+                    {sfxMutedState ? '🔊 SFX: OFF' : '🔊 SFX: ON'}
+                  </button>
+
+                  <div style={{ color: '#888', fontSize: 10, marginTop: 10 }}>
+                    Now Playing:<br/>
                     <span style={{ color: '#00ffd0' }}>{nowPlaying}</span>
                   </div>
-                  <button className="pixel-button" style={{ marginTop: 40 }} onClick={() => setActiveApp(null)}>Back</button>
+                  <button className="pixel-button" style={{ marginTop: 20 }} onClick={() => setActiveApp(null)}>Back</button>
                 </div>
               )}
 

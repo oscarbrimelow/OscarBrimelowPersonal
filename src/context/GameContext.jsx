@@ -71,7 +71,8 @@ export function GameProvider({ children }) {
     toggleBlackberry,
     handleChameleonClick,
     triggerLevelUp,
-    chameleonClicks
+    chameleonClicks,
+    spendMoney
   }
 
   return (
