@@ -1,10 +1,17 @@
 import { motion } from 'framer-motion'
 import { useGame } from '../context/GameContext'
+import chameleonImg from '../assets/chameleon.png'
 
 export default function Chameleon({ section }) {
   const { handleChameleonClick } = useGame()
-  const color = section === 'sky' ? '#00b7ff' : section === 'jungle' ? '#00ff9a' : '#b0b0b0'
   
+  // Dynamic filters based on section
+  const filterStyle = section === 'sky' 
+    ? 'brightness(0) saturate(100%) invert(48%) sepia(91%) saturate(2253%) hue-rotate(170deg) brightness(98%) contrast(101%)' // Blue
+    : section === 'jungle'
+    ? 'brightness(0) saturate(100%) invert(69%) sepia(61%) saturate(543%) hue-rotate(85deg) brightness(96%) contrast(90%)' // Green
+    : 'brightness(0.7)' // Grey/Dim
+
   return (
     <motion.div 
       onClick={handleChameleonClick}
@@ -22,22 +29,24 @@ export default function Chameleon({ section }) {
       style={{
         position: 'fixed',
         right: 12,
-        bottom: 80, // Moved up to avoid overlap with phone button
+        bottom: 80, 
         zIndex: 1200,
-        width: 54,
-        height: 32,
+        width: 64, // Slightly larger for better visibility
         cursor: 'pointer',
         filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.6))'
       }}
     >
-      <svg className="pixel" width="54" height="32" viewBox="0 0 54 32">
-        <rect x="2" y="12" width="30" height="12" fill={color}/>
-        <rect x="32" y="14" width="20" height="10" fill={color}/>
-        <rect x="4" y="10" width="6" height="4" fill="#fff"/>
-        <rect x="6" y="11" width="2" height="2" fill="#000"/>
-        <rect x="42" y="24" width="6" height="4" fill="#000"/>
-        <rect x="0" y="22" width="4" height="6" fill={color}/>
-      </svg>
+      <img 
+        src={chameleonImg} 
+        alt="Hidden Chameleon" 
+        style={{ 
+          width: '100%', 
+          height: 'auto',
+          imageRendering: 'pixelated', // Keep it crisp
+          filter: filterStyle,
+          transition: 'filter 0.5s ease'
+        }} 
+      />
     </motion.div>
   )
 }
