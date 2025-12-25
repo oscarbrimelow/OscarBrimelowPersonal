@@ -288,6 +288,22 @@ export default function App() {
         {/* Parallax Backgrounds */}
         <BgLayer img={skyBg} y={skyY} zIndex={0} top="0" />
         <BgLayer img={jhbBg} y={jhbY} zIndex={0} top="100vh" blend />
+        
+        {/* Transition Layer between JHB and CLE */}
+        <motion.div
+           style={{
+             position: 'absolute',
+             top: '180vh',
+             left: 0,
+             width: '100%',
+             height: '40vh',
+             zIndex: 1,
+             background: 'linear-gradient(to bottom, transparent, #0a0910 50%, transparent)',
+             pointerEvents: 'none',
+             y: jhbY // Move with JHB roughly
+           }}
+        />
+
         <BgLayer img={cleBg} y={cleY} zIndex={0} top="200vh" blend />
         <BgLayer img={iomBg} y={iomY} zIndex={0} top="300vh" blend />
         <BgLayer img={jungleBg} y={jungleY} zIndex={0} top="400vh" blend />
