@@ -17,7 +17,7 @@ import cleBg from './assets/cle-bg.png'
 import iomBg from './assets/iom-bg.png'
 import jungleBg from './assets/jungle-bg.png'
 import mineshaftBg from './assets/mineshaft-bg.png'
-import chameleonCursor from './assets/chameleon.ani'
+import tardisCursor from './assets/tardis-cursor.svg'
 
 export default function App() {
   const { scrollY } = useScroll()
@@ -74,8 +74,8 @@ export default function App() {
   useEffect(() => {
     console.log("%cHey fellow dev, hope you like the pixels!", "font-family: 'Press Start 2P'; font-size: 16px; color: #00ffd0; background: #222; padding: 10px; border-radius: 4px;")
     
-    // Custom Chameleon Cursor
-    document.body.style.cursor = `url('${chameleonCursor}'), auto`
+    // Custom Tardis Cursor
+    document.body.style.cursor = `url('${tardisCursor}') 16 16, auto`
     
     const handleMove = (e) => {
       if (Math.random() > 0.5) return // Reduce density
