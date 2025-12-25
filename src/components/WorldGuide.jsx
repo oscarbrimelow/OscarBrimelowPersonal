@@ -56,31 +56,33 @@ export default function WorldGuide({ onClose }) {
           {/* Text Content inside Bubble */}
           <div style={{
             position: 'absolute',
-            top: '50%', 
+            top: '45%', 
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '60%',
-            height: '55%',
+            width: '55%',
+            height: '50%',
             overflowY: 'auto',
-            color: '#000',
+            color: '#ffffff',
+            textShadow: '0 2px 4px rgba(0,0,0,0.8)',
             fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(14px, 2vw, 16px)',
+            fontSize: 'clamp(16px, 2.5vw, 20px)',
+            fontWeight: 500,
             textAlign: 'center',
             display: 'flex',
             flexDirection: 'column',
-            gap: 12,
-            scrollbarWidth: 'none', // Hide scrollbar for cleaner look
+            gap: 16,
+            scrollbarWidth: 'none',
             msOverflowStyle: 'none'
           }}>
-             <h3 style={{ margin: 0, fontFamily: "'Press Start 2P', cursive", fontSize: 18, color: '#222' }}>WORLD GUIDE</h3>
+             <h3 style={{ margin: 0, fontFamily: "'Press Start 2P', cursive", fontSize: 'clamp(18px, 3vw, 24px)', color: '#00ffd0', textShadow: '2px 2px 0 #000' }}>WORLD GUIDE</h3>
              <p style={{ margin: 0 }}><strong>Welcome, Traveler.</strong></p>
              <p style={{ margin: 0 }}>This is an interactive parallax world. Scroll to explore different biomes.</p>
-             <ul style={{ textAlign: 'left', paddingLeft: 20, margin: '5px 0' }}>
-               <li><strong>Phone:</strong> Check apps & inventory.</li>
-               <li><strong>Shop:</strong> Buy items & upgrades.</li>
-               <li><strong>Secrets:</strong> Find hidden codes.</li>
+             <ul style={{ textAlign: 'left', paddingLeft: 20, margin: '5px 0', listStyle: 'none' }}>
+               <li style={{ marginBottom: 8 }}>📱 <strong>Phone:</strong> Check apps & inventory.</li>
+               <li style={{ marginBottom: 8 }}>🛒 <strong>Shop:</strong> Buy items & upgrades.</li>
+               <li style={{ marginBottom: 8 }}>🔍 <strong>Secrets:</strong> Find hidden codes.</li>
              </ul>
-             <p style={{ margin: 0, fontSize: 12, fontStyle: 'italic', color: '#555' }}>"Click anywhere to close"</p>
+             <p style={{ margin: 0, fontSize: 12, fontStyle: 'italic', opacity: 0.8 }}>"Click anywhere to close"</p>
           </div>
         </div>
 
@@ -89,10 +91,10 @@ export default function WorldGuide({ onClose }) {
           src={me8bit} 
           alt="Oscar 8-bit" 
           style={{ 
-            height: '400px',
-            alignSelf: 'flex-start',
-            marginLeft: '5%',
-            marginTop: '-120px',
+            position: 'absolute',
+            bottom: '-50px',
+            left: '5%',
+            height: 'clamp(300px, 50vh, 600px)',
             filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))',
             zIndex: 10
           }} 
