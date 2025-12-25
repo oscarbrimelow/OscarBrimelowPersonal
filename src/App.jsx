@@ -265,6 +265,11 @@ function MainGame() {
           Explore the artifacts of creation.
         </div>
         <div style={{ marginTop: 18 }}>
+          <button className="pixel-button" onMouseEnter={() => play('blip')} onClick={() => setActiveScene('jungle')}>
+            📍 Explore Jungle
+          </button>
+        </div>
+        <div style={{ marginTop: 18 }}>
           <ProjectCards />
         </div>
       </div>
@@ -344,9 +349,10 @@ function MainGame() {
           bgImage={
             activeScene === 'jhb' ? jhbBg :
             activeScene === 'cle' ? cleBg :
-            activeScene === 'iom' ? iomBg :
-            mineshaftBg
-          }
+          activeScene === 'iom' ? iomBg :
+          activeScene === 'jungle' ? jungleBg :
+          mineshaftBg
+        }
           onClose={() => setActiveScene(null)}
         />
       )}
