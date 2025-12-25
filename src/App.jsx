@@ -134,32 +134,38 @@ export default function App() {
       <div className="world">
         {/* Parallax Layers - Now using Real Images */}
       <motion.div 
-        className="fixed inset-0 w-full h-[120vh] bg-cover bg-bottom z-0"
+        className="fixed inset-0 w-full h-[120vh] z-0 pointer-events-none"
         style={{ 
           y: skyY,
           backgroundImage: `url(${skyBg})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center bottom'
+          backgroundPosition: 'center bottom',
+          backgroundRepeat: 'no-repeat',
+          willChange: 'transform'
         }}
       />
       <motion.div 
-        className="fixed inset-0 w-full h-[120vh] bg-cover bg-bottom z-0"
+        className="fixed inset-0 w-full h-[120vh] z-0 pointer-events-none"
         style={{ 
           y: cityY,
           backgroundImage: `url(${cityBg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center bottom',
-          top: '100vh' // Starts below the sky
+          backgroundRepeat: 'no-repeat',
+          top: '100vh', // Starts below the sky
+          willChange: 'transform'
         }}
       />
       <motion.div 
-        className="fixed inset-0 w-full h-[150vh] bg-cover bg-top z-0"
+        className="fixed inset-0 w-full h-[150vh] z-0 pointer-events-none"
         style={{ 
           y: jungleY,
           backgroundImage: `url(${jungleBg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center top',
-          top: '200vh' // Starts below the city
+          backgroundRepeat: 'no-repeat',
+          top: '200vh', // Starts below the city
+          willChange: 'transform'
         }}
       />
         <div style={{ position: 'relative' }}>
