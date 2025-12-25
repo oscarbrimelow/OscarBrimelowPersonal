@@ -10,11 +10,9 @@ import useKonami from './hooks/useKonami.js'
 import { isDayInSouthAfrica, ageFromDOB } from './utils/time.js'
 import { play } from './audio/engine.js'
 
-// Use public folder assets with explicit base URL for GitHub Pages reliability
-const BASE_URL = import.meta.env.BASE_URL
-const skyBg = `${BASE_URL}sky-bg.png`
-const cityBg = `${BASE_URL}city-bg.png`
-const jungleBg = `${BASE_URL}jungle-bg.png`
+import skyBg from './assets/sky-bg.png'
+import cityBg from './assets/city-bg.png'
+import jungleBg from './assets/jungle-bg.png'
 
 export default function App() {
   const { scrollYProgress } = useScroll()
@@ -134,43 +132,34 @@ export default function App() {
         <span className="badge">Scroll to explore</span>
       </div>
       <div className="world">
-        {/* Parallax Layers - Now using Real Images from Public Folder */}
-      <motion.div 
-        className="fixed inset-0 w-full h-[120vh] z-0 pointer-events-none"
+        {/* Parallax Layers - Switched to motion.img for reliable loading */}
+      <motion.img 
+        src={skyBg}
+        alt="Sky Background"
+        className="fixed inset-0 w-full h-[120vh] z-0 pointer-events-none object-cover object-bottom"
         style={{ 
           y: skyY,
-          backgroundImage: `url(${skyBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center bottom',
-          backgroundRepeat: 'no-repeat',
-          willChange: 'transform',
-          backgroundColor: '#2a2a4e' // Fallback Dark Sky
+          willChange: 'transform'
         }}
       />
-      <motion.div 
-        className="fixed inset-0 w-full h-[120vh] z-0 pointer-events-none"
+      <motion.img 
+        src={cityBg}
+        alt="City Background"
+        className="fixed inset-0 w-full h-[120vh] z-0 pointer-events-none object-cover object-bottom"
         style={{ 
           y: cityY,
-          backgroundImage: `url(${cityBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center bottom',
-          backgroundRepeat: 'no-repeat',
-          top: '100vh', // Starts below the sky
-          willChange: 'transform',
-          backgroundColor: '#1a1a2e' // Fallback City Dark
+          top: '100vh',
+          willChange: 'transform'
         }}
       />
-      <motion.div 
-        className="fixed inset-0 w-full h-[150vh] z-0 pointer-events-none"
+      <motion.img 
+        src={jungleBg}
+        alt="Jungle Background"
+        className="fixed inset-0 w-full h-[150vh] z-0 pointer-events-none object-cover object-top"
         style={{ 
           y: jungleY,
-          backgroundImage: `url(${jungleBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center top',
-          backgroundRepeat: 'no-repeat',
-          top: '200vh', // Starts below the city
-          willChange: 'transform',
-          backgroundColor: '#0a1a0a' // Fallback Jungle Green
+          top: '200vh',
+          willChange: 'transform'
         }}
       />
         <div style={{ position: 'relative' }}>
