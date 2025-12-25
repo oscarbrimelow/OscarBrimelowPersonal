@@ -1,3 +1,11 @@
+import ponteImg from '../assets/pontecity.jpg'
+import terminalTowerImg from '../assets/terminaltower.jpg'
+import goldReefImg from '../assets/goldreefcity.jpg'
+import melvilleImg from '../assets/melville.jpg'
+import rocknrollImg from '../assets/rocknroll.jpg'
+import laxeyWheelImg from '../assets/laxeywheel.jpg'
+import sulbyGlenImg from '../assets/sulbyglenhotel.jpg'
+
 export const sceneData = {
   jhb: {
     items: [
@@ -66,8 +74,30 @@ export const sceneData = {
         height: 30,
         type: 'landmark',
         name: 'Ponte City',
-        image: 'https://images.unsplash.com/photo-1577083288073-40892c0860a4?q=80&w=1000&auto=format&fit=crop',
+        image: ponteImg,
         description: 'Ponte City is the tallest residential skyscraper in Africa. A brutalist icon of the Johannesburg skyline.'
+      },
+      {
+        id: 'jhb_goldreef',
+        x: 15,
+        y: 30,
+        width: 15,
+        height: 15,
+        type: 'landmark',
+        name: 'Gold Reef City',
+        image: goldReefImg,
+        description: 'Built on top of an old gold mine, this theme park represents the gold rush history of Johannesburg.'
+      },
+      {
+        id: 'jhb_melville',
+        x: 85,
+        y: 25,
+        width: 12,
+        height: 12,
+        type: 'landmark',
+        name: 'Melville Koppies',
+        image: melvilleImg,
+        description: 'A nature reserve and heritage site in the heart of the city, showing the natural beauty of the Highveld.'
       }
     ]
   },
@@ -109,8 +139,19 @@ export const sceneData = {
         height: 40,
         type: 'landmark',
         name: 'Terminal Tower',
-        image: 'https://images.unsplash.com/photo-1626125345510-4603468eedfb?q=80&w=1000&auto=format&fit=crop',
+        image: terminalTowerImg,
         description: 'The Terminal Tower is a 52-story landmark skyscraper located on Public Square in downtown Cleveland.'
+      },
+      {
+        id: 'cle_rockhall',
+        x: 80,
+        y: 45,
+        width: 15,
+        height: 20,
+        type: 'landmark',
+        name: 'Rock & Roll Hall of Fame',
+        image: rocknrollImg,
+        description: 'The world-famous museum documenting the history of rock music and the artists, producers, and engineers who have influenced its development.'
       }
     ]
   },
@@ -153,6 +194,28 @@ export const sceneData = {
         icon: '🚨',
         type: 'inspect',
         message: 'The Point of Ayre Lighthouse blinking in the distance.'
+      },
+      {
+        id: 'iom_laxey',
+        x: 60,
+        y: 35,
+        width: 15,
+        height: 25,
+        type: 'landmark',
+        name: 'Laxey Wheel',
+        image: laxeyWheelImg,
+        description: 'The Great Laxey Wheel is the largest working waterwheel in the world.'
+      },
+      {
+        id: 'iom_sulby',
+        x: 20,
+        y: 45,
+        width: 15,
+        height: 15,
+        type: 'landmark',
+        name: 'Sulby Glen Hotel',
+        image: sulbyGlenImg,
+        description: 'A classic Manx pub and hotel nestled in the beautiful Sulby Glen.'
       }
     ]
   },
