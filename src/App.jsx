@@ -71,13 +71,40 @@ export default function App() {
   }, [section])
 
   useEffect(() => {
+    console.log("%cHey fellow dev, hope you like the pixels!", "font-family: 'Press Start 2P'; font-size: 16px; color: #00ffd0; background: #222; padding: 10px; border-radius: 4px;")
+    
+    // Custom Sword Cursor
+    const swordCursor = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" style="transform: rotate(-45deg);"><text y="24" x="0" font-size="24">🗡️</text></svg>') 0 0, auto`
+    document.body.style.cursor = swordCursor
+    
     const handleMove = (e) => {
+      if (Math.random() > 0.5) return // Reduce density
       const dot = document.createElement('div')
       dot.className = 'cursor-trail'
       dot.style.left = `${e.clientX}px`
       dot.style.top = `${e.clientY}px`
+      
+      // Sparkle styles
+      const size = Math.random() * 6 + 2
+      dot.style.width = `${size}px`
+      dot.style.height = `${size}px`
+      dot.style.background = ['#fff', '#00ffd0', '#ffd700', '#ff0055'][Math.floor(Math.random() * 4)]
+      dot.style.borderRadius = '0%' // Pixel square
+      dot.style.boxShadow = '0 0 4px rgba(255,255,255,0.8)'
+      dot.style.pointerEvents = 'none'
+      dot.style.position = 'fixed'
+      dot.style.zIndex = '9999'
+      dot.style.transition = 'transform 0.5s, opacity 0.5s'
+      
       document.body.appendChild(dot)
-      setTimeout(() => dot.remove(), 400)
+      
+      // Animate out
+      requestAnimationFrame(() => {
+        dot.style.transform = `translate(${Math.random()*20-10}px, ${Math.random()*20+10}px) rotate(${Math.random()*360}deg)`
+        dot.style.opacity = '0'
+      })
+
+      setTimeout(() => dot.remove(), 500)
     }
     window.addEventListener('mousemove', handleMove)
     return () => window.removeEventListener('mousemove', handleMove)
@@ -427,28 +454,34 @@ function Notebook() {
   )
 }
 
-function Notebook() {
-  const [text, setText] = useState(() => localStorage.getItem('notebook') || '')
-  useEffect(() => { localStorage.setItem('notebook', text) }, [text])
+function ImdbMarquee() {
+  const [items] = useState([
+    'Blade Runner',
+    'Rick & Morty',
+    'Everything Everywhere All at Once',
+    'The Matrix',
+    'Interstellar'
+  ])
   return (
-    <textarea
-      value={text}
-      onChange={e => setText(e.target.value)}
-      placeholder="Random thoughts..."
-      style={{
-        width: 'min(800px, 92vw)',
-        height: 120,
-        background: '#0c0c0c',
+    <div style={{ width: 'min(800px, 92vw)' }}>
+      <div style={{
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
         border: '3px solid #2b2b2b',
         borderRadius: 8,
-        color: '#eaffff',
-        padding: 12,
-        fontFamily: 'VT323, monospace',
-        fontSize: 18,
-        marginTop: 10
-      }}
-    />
+        padding: '8px 12px',
+        background: '#0c0c0c'
+      }}>
+        <motion.div
+          initial={{ x: '100%' }}
+          animate={{ x: '-100%' }}
+          transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+        >
+          {items.map((it, i) => (
+            <span key={i} style={{ marginRight: 36, fontSize: 18 }}>🎬 {it}</span>
+          ))}
+        </motion.div>
+      </div>
+    </div>
   )
 }
-
-function ImdbMarquee() {
