@@ -18,21 +18,26 @@ import jungleBg from './assets/jungle-bg.png'
 import mineshaftBg from './assets/mineshaft-bg.png'
 
 export default function App() {
-  const { scrollYProgress } = useScroll()
-  
-  // Adjusted Parallax:
-  // Instead of complex transforms, we lock each background to its viewport section
-  // but allow a slight "parallax" drag.
-  // The backgrounds are positioned absolutely at 0vh, 100vh, 200vh, etc.
-  // We use useTransform to create a small "drag" effect so they don't feel static,
-  // but they will definitely show up in their designated slot.
-  
-  const skyY = useTransform(scrollYProgress, [0, 0.2], [0, 50])
-  const jhbY = useTransform(scrollYProgress, [0.1, 0.3], [0, 50])
-  const cleY = useTransform(scrollYProgress, [0.3, 0.5], [0, 50])
-  const iomY = useTransform(scrollYProgress, [0.5, 0.7], [0, 50])
-  const jungleY = useTransform(scrollYProgress, [0.7, 0.9], [0, 50])
-  const mineshaftY = useTransform(scrollYProgress, [0.9, 1], [0, 50])
+  const { scrollY } = useScroll()
+  const [vh, setVh] = useState(0)
+
+  useEffect(() => {
+    const updateVh = () => setVh(window.innerHeight)
+    updateVh()
+    window.addEventListener('resize', updateVh)
+    return () => window.removeEventListener('resize', updateVh)
+  }, [])
+
+  // Parallax Logic:
+  // Move at 0.5x speed.
+  // Formula: y = scrollY * 0.5 - (startOffset * 0.5)
+  // This ensures that when scrollY == startOffset, y == 0, so the image is exactly in place.
+  const skyY = useTransform(scrollY, v => v * 0.5)
+  const jhbY = useTransform(scrollY, v => v * 0.5 - (vh * 1) * 0.5)
+  const cleY = useTransform(scrollY, v => v * 0.5 - (vh * 2) * 0.5)
+  const iomY = useTransform(scrollY, v => v * 0.5 - (vh * 3) * 0.5)
+  const jungleY = useTransform(scrollY, v => v * 0.5 - (vh * 4) * 0.5)
+  const mineshaftY = useTransform(scrollY, v => v * 0.5 - (vh * 5) * 0.5)
 
   const [section, setSection] = useState('sky')
   const [dialog, setDialog] = useState(null)
@@ -185,7 +190,9 @@ export default function App() {
               onMouseEnter={() => play('blip')}
               onClick={() => {
                 play('collect')
-                alert(`You mined ${ore}! Found a hidden secret (placeholder).`)
+                const prizes = ['XP +10', 'Found a Ruby!', 'Nothing here...', 'A secret key!', 'Golden Nugget!', 'Coal...']
+                const prize = prizes[Math.floor(Math.random() * prizes.length)]
+                alert(`You mined ${ore}! ${prize}`)
               }}
             >
               {ore}
@@ -246,11 +253,11 @@ function BgLayer({ img, y, top }) {
       src={img}
       alt="Background"
       style={{ 
-        position: 'fixed',
+        position: 'absolute',
         top: top,
         left: 0,
         width: '100%',
-        height: '100vh',
+        height: '120vh',
         objectFit: 'cover',
         objectPosition: 'center',
         zIndex: 0,
