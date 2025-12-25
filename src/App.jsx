@@ -132,12 +132,20 @@ export default function App() {
         <span className="badge">Scroll to explore</span>
       </div>
       <div className="world">
-        {/* Parallax Layers - Switched to motion.img for reliable loading */}
+        {/* Parallax Layers - Using inline styles since Tailwind is not configured */}
       <motion.img 
         src={skyBg}
         alt="Sky Background"
-        className="fixed inset-0 w-full h-[120vh] z-0 pointer-events-none object-cover object-bottom"
         style={{ 
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '120vh',
+          objectFit: 'cover',
+          objectPosition: 'bottom',
+          zIndex: 0,
+          pointerEvents: 'none',
           y: skyY,
           willChange: 'transform'
         }}
@@ -145,20 +153,34 @@ export default function App() {
       <motion.img 
         src={cityBg}
         alt="City Background"
-        className="fixed inset-0 w-full h-[120vh] z-0 pointer-events-none object-cover object-bottom"
         style={{ 
-          y: cityY,
+          position: 'fixed',
           top: '100vh',
+          left: 0,
+          width: '100%',
+          height: '120vh',
+          objectFit: 'cover',
+          objectPosition: 'bottom',
+          zIndex: 0,
+          pointerEvents: 'none',
+          y: cityY,
           willChange: 'transform'
         }}
       />
       <motion.img 
         src={jungleBg}
         alt="Jungle Background"
-        className="fixed inset-0 w-full h-[150vh] z-0 pointer-events-none object-cover object-top"
         style={{ 
-          y: jungleY,
+          position: 'fixed',
           top: '200vh',
+          left: 0,
+          width: '100%',
+          height: '150vh',
+          objectFit: 'cover',
+          objectPosition: 'top',
+          zIndex: 0,
+          pointerEvents: 'none',
+          y: jungleY,
           willChange: 'transform'
         }}
       />
