@@ -20,6 +20,8 @@ const apps = [
   { id: 'guide', icon: '📖', label: 'Guide' }
 ]
 
+const secretApp = { id: 'secrets', icon: '👁️', label: 'Secrets' }
+
 const shopItems = [
   { name: 'Coffee', icon: '☕', price: 10, desc: 'Fuel for code.' },
   { name: 'Potion', icon: '🧪', price: 50, desc: 'Restores HP.' },
@@ -28,25 +30,22 @@ const shopItems = [
 ]
 
 export default function BlackberryPhone() {
-  const { blackberryOpen, setBlackberryOpen, money, inventory, spendMoney, addToInventory } = useGame()
+  const { blackberryOpen, setBlackberryOpen, money, inventory, spendMoney, addToInventory, useItem, hasSecretApp } = useGame()
   const [activeApp, setActiveApp] = useState(null)
   const [volume, setVolume] = useState(1)
   const [musicMutedState, setMusicMutedState] = useState(isMusicMuted())
   const [sfxMutedState, setSfxMutedState] = useState(isSfxMuted())
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString('en-ZA'))
+  const [selectedItemIndex, setSelectedItemIndex] = useState(null)
 
   const handleBuy = (item) => {
-    if (inventory.length >= 3) {
+    if (inventory.length >= 20) {
       play('blip')
       alert('Bag full!')
       return
     }
-    if (inventory.includes(item.icon)) {
-      play('blip')
-      alert('Already owned!')
-      return
-    }
-
+    // Removed duplicate check because consumables can be stacked (logic-wise they are separate entries for now)
+    
     if (spendMoney(item.price)) {
       addToInventory(item.icon)
       play('collect')
@@ -149,6 +148,14 @@ export default function BlackberryPhone() {
                       <span style={{ fontSize: 10, color: '#fff' }}>{app.label}</span>
                     </div>
                   ))}
+                  {hasSecretApp && (
+                    <div onClick={() => handleAppClick(secretApp.id)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+                      <div style={{ width: 50, height: 50, background: '#220022', borderRadius: 12, border: '1px solid #00ffd0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, marginBottom: 5 }}>
+                        {secretApp.icon}
+                      </div>
+                      <span style={{ fontSize: 10, color: '#00ffd0' }}>{secretApp.label}</span>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -184,21 +191,55 @@ export default function BlackberryPhone() {
 
               {activeApp === 'bag' && (
                 <div style={{ textAlign: 'center' }}>
-                  <h4 style={{ color: '#fff', marginBottom: 15 }}>Inventory</h4>
+                  <h4 style={{ color: '#fff', marginBottom: 15 }}>Inventory ({inventory.length}/20)</h4>
                   {inventory.length === 0 ? (
                     <div style={{ color: '#888', marginTop: 20 }}>Bag is empty.</div>
                   ) : (
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
-                      {inventory.map((item, i) => (
-                        <div key={i} style={{ 
-                          width: 50, height: 50, background: '#333', 
-                          display: 'flex', alignItems: 'center', justifyContent: 'center', 
-                          fontSize: 24, borderRadius: 8, border: '1px solid #555' 
-                        }}>
-                          {item}
+                    <>
+                      <div style={{ 
+                        display: 'grid', 
+                        gridTemplateColumns: 'repeat(4, 1fr)', 
+                        gap: 10,
+                        maxHeight: 300,
+                        overflowY: 'auto',
+                        padding: 5
+                      }}>
+                        {inventory.map((item, i) => (
+                          <div 
+                            key={i} 
+                            onClick={() => {
+                              play('blip')
+                              setSelectedItemIndex(i === selectedItemIndex ? null : i)
+                            }}
+                            style={{ 
+                              width: 50, height: 50, background: selectedItemIndex === i ? '#555' : '#333', 
+                              display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                              fontSize: 24, borderRadius: 8, border: selectedItemIndex === i ? '2px solid #00ffd0' : '1px solid #555',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                      
+                      {selectedItemIndex !== null && inventory[selectedItemIndex] && (
+                        <div style={{ marginTop: 20, padding: 10, background: '#222', borderRadius: 8 }}>
+                          <div style={{ fontSize: 30, marginBottom: 10 }}>{inventory[selectedItemIndex]}</div>
+                          <button 
+                            className="pixel-button" 
+                            onClick={() => {
+                              const msg = useItem(inventory[selectedItemIndex], selectedItemIndex)
+                              play(msg.includes('cannot') ? 'blip' : 'collect')
+                              alert(msg)
+                              setSelectedItemIndex(null)
+                            }}
+                          >
+                            USE ITEM
+                          </button>
                         </div>
-                      ))}
-                    </div>
+                      )}
+                    </>
                   )}
                   <button className="pixel-button" style={{ marginTop: 20 }} onClick={() => setActiveApp(null)}>Back</button>
                 </div>
@@ -283,6 +324,22 @@ export default function BlackberryPhone() {
 
               {activeApp === 'guide' && (
                  <WorldGuide onClose={() => setActiveApp(null)} />
+              )}
+
+              {activeApp === 'secrets' && (
+                 <div style={{ textAlign: 'center' }}>
+                   <h4 style={{ color: '#00ffd0', marginBottom: 20 }}>Hidden Logs</h4>
+                   <p style={{ color: '#aaa', fontSize: 12, marginBottom: 20 }}>
+                     You have found the developer backdoor.
+                   </p>
+                   <ul style={{ textAlign: 'left', fontSize: 12, color: '#fff', paddingLeft: 20 }}>
+                     <li>Konami Code: ↑↑↓↓←→←→BA</li>
+                     <li>Type "OSCAR" for XP</li>
+                     <li>Click the Chameleon 3 times</li>
+                     <li>Click projects for cash (cooldown)</li>
+                   </ul>
+                   <button className="pixel-button" style={{ marginTop: 20 }} onClick={() => setActiveApp(null)}>Back</button>
+                 </div>
               )}
 
             </div>

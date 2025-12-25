@@ -15,6 +15,9 @@ export function GameProvider({ children }) {
   const [blackberryOpen, setBlackberryOpen] = useState(false)
   const [chameleonClicks, setChameleonClicks] = useState(0)
 
+  const [godMode, setGodMode] = useState(false)
+  const [hasSecretApp, setHasSecretApp] = useState(false)
+
   // Actions
   const addMoney = (amount) => setMoney(m => m + amount)
   
@@ -27,14 +30,76 @@ export function GameProvider({ children }) {
   }
 
   const addToInventory = (item) => {
-    if (inventory.length < 3 && !inventory.includes(item)) {
+    if (inventory.length < 20) {
       setInventory(prev => [...prev, item])
       return true
     }
     return false
   }
 
+  const removeFromInventory = (index) => {
+    setInventory(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const useItem = (item, index) => {
+    let used = false
+    let message = ''
+
+    switch(item) {
+      case '☕':
+        setHealth(h => Math.min(100, h + 20))
+        message = 'You feel caffeinated! (+20 HP)'
+        used = true
+        break
+      case '🧪':
+        setHealth(h => Math.min(100, h + 50))
+        message = 'Health restored! (+50 HP)'
+        used = true
+        break
+      case '💻':
+        setGodMode(prev => !prev)
+        message = godMode ? 'God Mode Deactivated.' : 'God Mode Activated!'
+        // Dev Kit is reusable, so we don't remove it? 
+        // Or maybe it's a one-time activation? Let's make it toggleable and NOT consumed.
+        used = false 
+        break
+      case '🗝️':
+        if (!hasSecretApp) {
+          setHasSecretApp(true)
+          message = 'You unlocked the Secret App!'
+          used = true
+        } else {
+          message = 'You already used this key.'
+          used = false
+        }
+        break
+      case '💎':
+        addMoney(500)
+        message = 'Sold Ruby for $500!'
+        used = true
+        break
+      case '⚜️':
+        addMoney(200)
+        message = 'Sold Gold Nugget for $200!'
+        used = true
+        break
+      case '⚫':
+        message = 'It is just coal... (No effect)'
+        used = true // Consume it to get rid of it? Or keep it? Let's consume.
+        break
+      default:
+        message = 'This item cannot be used.'
+    }
+
+    if (used) {
+      removeFromInventory(index)
+    }
+    
+    return message
+  }
+
   const takeDamage = (amount) => {
+    if (godMode) return
     setHealth(h => Math.max(0, h - amount))
   }
 
@@ -80,7 +145,10 @@ export function GameProvider({ children }) {
     handleChameleonClick,
     triggerLevelUp,
     chameleonClicks,
-    spendMoney
+    spendMoney,
+    useItem,
+    godMode,
+    hasSecretApp
   }
 
   return (

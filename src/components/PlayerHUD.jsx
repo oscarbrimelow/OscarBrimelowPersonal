@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { useGame } from '../context/GameContext'
 
 export default function PlayerHUD({ isShaking }) {
-  const { health, money, inventory } = useGame()
+  const { health, money, inventory, godMode } = useGame()
 
   return (
     <div className="hud-overlay" style={{
@@ -23,7 +23,7 @@ export default function PlayerHUD({ isShaking }) {
         transition={{ duration: 0.2 }}
         style={{ display: 'flex', alignItems: 'center', gap: 8 }}
       >
-        <span>HP</span>
+        <span>{godMode ? 'GOD' : 'HP'}</span>
         <div style={{ 
           width: 100, 
           height: 16, 
@@ -32,9 +32,9 @@ export default function PlayerHUD({ isShaking }) {
           position: 'relative'
         }}>
           <div style={{
-            width: `${health}%`,
+            width: godMode ? '100%' : `${health}%`,
             height: '100%',
-            background: health > 50 ? '#00ff00' : health > 20 ? '#ffff00' : '#ff0000',
+            background: godMode ? '#00ccff' : (health > 50 ? '#00ff00' : health > 20 ? '#ffff00' : '#ff0000'),
             transition: 'width 0.2s'
           }} />
         </div>
@@ -46,7 +46,7 @@ export default function PlayerHUD({ isShaking }) {
         <span>{money.toString().padStart(4, '0')}</span>
       </div>
 
-      {/* Inventory */}
+      {/* Inventory Preview (First 3 items) */}
       <div style={{ display: 'flex', gap: 4 }}>
         {[0, 1, 2].map(i => (
           <div key={i} style={{
@@ -62,6 +62,9 @@ export default function PlayerHUD({ isShaking }) {
             {inventory[i] || ''}
           </div>
         ))}
+        {inventory.length > 3 && (
+          <div style={{ fontSize: 10, alignSelf: 'center' }}>+{inventory.length - 3}</div>
+        )}
       </div>
     </div>
   )
