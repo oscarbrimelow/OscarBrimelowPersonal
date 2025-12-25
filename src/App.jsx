@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'framer-motion'
 import SoundBar from './components/SoundBar.jsx'
 import Chameleon from './components/Chameleon.jsx'
 import RetroDialog from './components/RetroDialog.jsx'
@@ -38,11 +38,13 @@ export default function App() {
   // Custom Transforms for Slide Effect (JHB -> CLE)
   // JHB: Standard parallax until vh, then slides Left + Pinned Vertical
   const jhbY = useTransform(scrollY, [0, vh, 2*vh], [-vh*0.15, 0, vh])
-  const jhbX = useTransform(scrollY, [0, vh, 2*vh], ['0%', '0%', '-100%'])
+  const rawJhbX = useTransform(scrollY, [0, vh, 2*vh], ['0%', '0%', '-100%'])
+  const jhbX = useSpring(rawJhbX, { stiffness: 100, damping: 20, mass: 0.5 })
 
   // CLE: Starts pinned vertical (but offscreen right) at vh, then slides in
   const cleY = useTransform(scrollY, [0, vh, 2*vh, 3*vh], [-vh*0.3, -vh, 0, vh*0.15])
-  const cleX = useTransform(scrollY, [0, vh, 2*vh], ['100%', '100%', '0%'])
+  const rawCleX = useTransform(scrollY, [0, vh, 2*vh], ['100%', '100%', '0%'])
+  const cleX = useSpring(rawCleX, { stiffness: 100, damping: 20, mass: 0.5 })
 
   // Other sections standard parallax
   const skyY = useTransform(scrollY, v => v * parallaxFactor)
@@ -337,8 +339,10 @@ function BgLayer({ img, y, x, top, blend }) {
         y: y,
         x: x,
         willChange: 'transform',
-        maskImage: blend ? 'linear-gradient(to bottom, transparent 0%, black 20%, black 100%)' : undefined,
-        WebkitMaskImage: blend ? 'linear-gradient(to bottom, transparent 0%, black 20%, black 100%)' : undefined
+        maskImage: blend ? 'linear-gradient(to bottom, transparent 0%, black 40%, black 100%)' : undefined,
+        WebkitMaskImage: blend ? 'linear-gradient(to bottom, transparent 0%, black 40%, black 100%)' : undefined,
+        maskRepeat: 'no-repeat',
+        WebkitMaskRepeat: 'no-repeat'
       }}
     />
   )
