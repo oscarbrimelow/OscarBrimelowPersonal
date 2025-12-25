@@ -9,6 +9,7 @@ import SocialIcons from './components/SocialIcons.jsx'
 import ProjectCards from './components/ProjectCards.jsx'
 import KonamiPortal from './components/KonamiPortal.jsx'
 import WorldGuide from './components/WorldGuide.jsx'
+import SceneExplorer from './components/SceneExplorer.jsx'
 import useKonami from './hooks/useKonami.js'
 import { isDayInSouthAfrica, ageFromDOB } from './utils/time.js'
 import { play } from './audio/engine.js'
@@ -109,6 +110,7 @@ function MainGame() {
   const [portal, setPortal] = useState(false)
   const [miningGame, setMiningGame] = useState(false)
   const [guideOpen, setGuideOpen] = useState(false)
+  const [activeScene, setActiveScene] = useState(null)
   const isDay = isDayInSouthAfrica()
   const age = ageFromDOB('2004-08-08')
 
@@ -200,8 +202,8 @@ function MainGame() {
           Roots. Energy. Code.
         </div>
         <div style={{ marginTop: 24 }}>
-          <button className="pixel-button" onMouseEnter={() => play('blip')} onClick={() => setDialog('jhb')}>
-            📍 Johannesburg Skyline
+          <button className="pixel-button" onMouseEnter={() => play('blip')} onClick={() => setActiveScene('jhb')}>
+            📍 Explore Johannesburg
           </button>
         </div>
       </div>
@@ -221,8 +223,8 @@ function MainGame() {
           The Arcade. Midwest Tech.
         </div>
         <div style={{ marginTop: 24 }}>
-          <button className="pixel-button" onMouseEnter={() => play('blip')} onClick={() => setDialog('cle')}>
-            📍 Cleveland Arcade
+          <button className="pixel-button" onMouseEnter={() => play('blip')} onClick={() => setActiveScene('cle')}>
+            📍 Explore Arcade
           </button>
         </div>
       </div>
@@ -242,8 +244,8 @@ function MainGame() {
           Lighthouse views. Calm & Focus.
         </div>
         <div style={{ marginTop: 24 }}>
-          <button className="pixel-button" onMouseEnter={() => play('blip')} onClick={() => setDialog('iom')}>
-            📍 Lighthouse
+          <button className="pixel-button" onMouseEnter={() => play('blip')} onClick={() => setActiveScene('iom')}>
+            📍 Explore Lighthouse
           </button>
         </div>
       </div>
@@ -275,6 +277,17 @@ function MainGame() {
         <div className="title">The Mineshaft</div>
         <div style={{ fontSize: 18, marginTop: 8 }}>
           Digging deep into data & extras.
+        </div>
+        
+        {/* Explore Button */}
+        <div style={{ marginTop: 16 }}>
+          <button 
+            className="pixel-button" 
+            onClick={() => setActiveScene('mineshaft')}
+            onMouseEnter={() => play('blip')}
+          >
+             🔦 Explore Mines
+          </button>
         </div>
         
         <div style={{ marginTop: 24, display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -324,6 +337,20 @@ function MainGame() {
       <Chameleon section={section} />
       <KonamiPortal visible={portal} onClose={() => setPortal(false)} />
       {guideOpen && <WorldGuide onClose={() => setGuideOpen(false)} />}
+      
+      {activeScene && (
+        <SceneExplorer 
+          sceneId={activeScene}
+          bgImage={
+            activeScene === 'jhb' ? jhbBg :
+            activeScene === 'cle' ? cleBg :
+            activeScene === 'iom' ? iomBg :
+            mineshaftBg
+          }
+          onClose={() => setActiveScene(null)}
+        />
+      )}
+
       {miningGame && <MiningGame onClose={() => setMiningGame(false)} />}
       <AnimatePresence>
         {section === 'jungle' && <JungleExtras />}
