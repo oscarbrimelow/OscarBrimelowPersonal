@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGame } from '../context/GameContext'
-import { toggleMute, isMuted, nowPlaying } from '../audio/engine'
+import { 
+  play, toggleMute, isMuted, nowPlaying, 
+  setGlobalVolume, toggleMusicMute, toggleSfxMute, 
+  isMusicMuted, isSfxMuted 
+} from '../audio/engine'
 import SocialIcons from './SocialIcons'
 import WorldGuide from './WorldGuide'
 import { isDayInSouthAfrica } from '../utils/time'
@@ -10,15 +14,47 @@ const apps = [
   { id: 'socials', icon: '🌐', label: 'Socials' },
   { id: 'clock', icon: '⏰', label: 'Clock' },
   { id: 'map', icon: '🗺️', label: 'Map' },
+  { id: 'bag', icon: '🎒', label: 'Bag' },
+  { id: 'shop', icon: '🛒', label: 'Shop' },
   { id: 'settings', icon: '⚙️', label: 'Settings' },
   { id: 'guide', icon: '📖', label: 'Guide' }
 ]
 
+const shopItems = [
+  { name: 'Coffee', icon: '☕', price: 10, desc: 'Fuel for code.' },
+  { name: 'Potion', icon: '🧪', price: 50, desc: 'Restores HP.' },
+  { name: 'Key', icon: '🗝️', price: 100, desc: 'Unlocks ???' },
+  { name: 'Dev Kit', icon: '💻', price: 999, desc: 'God Mode.' }
+]
+
 export default function BlackberryPhone() {
-  const { blackberryOpen, setBlackberryOpen } = useGame()
+  const { blackberryOpen, setBlackberryOpen, money, inventory, spendMoney, addToInventory } = useGame()
   const [activeApp, setActiveApp] = useState(null)
-  const [muted, setMuted] = useState(isMuted())
+  const [volume, setVolume] = useState(1)
+  const [musicMutedState, setMusicMutedState] = useState(isMusicMuted())
+  const [sfxMutedState, setSfxMutedState] = useState(isSfxMuted())
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString('en-ZA'))
+
+  const handleBuy = (item) => {
+    if (inventory.length >= 3) {
+      play('blip')
+      alert('Bag full!')
+      return
+    }
+    if (inventory.includes(item.icon)) {
+      play('blip')
+      alert('Already owned!')
+      return
+    }
+
+    if (spendMoney(item.price)) {
+      addToInventory(item.icon)
+      play('collect')
+    } else {
+      play('blip')
+      alert('Not enough cash!')
+    }
+  }
 
   useEffect(() => {
     const t = setInterval(() => setCurrentTime(new Date().toLocaleTimeString('en-ZA')), 1000)
