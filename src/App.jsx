@@ -100,6 +100,8 @@ function MainGame() {
   const jhbX = useTransform(scrollY, [0, vh, 2*vh], ['0%', '0%', '-100%'])
   const cleY = useTransform(scrollY, [0, vh, 2*vh, 3*vh], [-vh*0.3, -vh, 0, vh*0.15])
   const cleX = useTransform(scrollY, [0, vh, 2*vh], ['100%', '100%', '0%'])
+  const jhbOpacity = useTransform(scrollY, [vh, 1.5*vh, 2*vh], [1, 0.5, 0])
+  const cleOpacity = useTransform(scrollY, [vh, 1.5*vh, 2*vh], [0, 0.5, 1])
   const skyY = useTransform(scrollY, v => v * parallaxFactor)
   const iomY = useTransform(scrollY, v => v * parallaxFactor - (vh * 3) * parallaxFactor)
   const jungleY = useTransform(scrollY, v => v * parallaxFactor - (vh * 4) * parallaxFactor)
