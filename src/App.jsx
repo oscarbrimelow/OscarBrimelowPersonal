@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import SoundBar from './components/SoundBar.jsx'
 import Chameleon from './components/Chameleon.jsx'
 import RetroDialog from './components/RetroDialog.jsx'
 import SocialIcons from './components/SocialIcons.jsx'
 import ProjectCards from './components/ProjectCards.jsx'
 import KonamiPortal from './components/KonamiPortal.jsx'
+import PixelAvatar from './components/PixelAvatar.jsx'
 import useKonami from './hooks/useKonami.js'
 import { isDayInSouthAfrica, ageFromDOB } from './utils/time.js'
 import { play } from './audio/engine.js'
@@ -41,6 +42,7 @@ export default function App() {
   const [section, setSection] = useState('sky')
   const [dialog, setDialog] = useState(null)
   const [portal, setPortal] = useState(false)
+  const [miningGame, setMiningGame] = useState(false)
   const isDay = isDayInSouthAfrica()
   const age = ageFromDOB('2004-08-08')
 
@@ -113,6 +115,13 @@ export default function App() {
           Where code and hustle meet. Coffee-fueled builds and big city energy.
         </RetroDialog>
       )}
+      <motion.div 
+        whileHover={{ scale: 1.2, y: -5 }}
+        style={{ position: 'absolute', top: '30%', left: '10%', fontSize: '40px', cursor: 'pointer', zIndex: 20 }}
+        onClick={() => setDialog('jhb')}
+      >
+        🏙️
+      </motion.div>
     </div>
   )
 
@@ -134,6 +143,13 @@ export default function App() {
           Rust belt charm with Midwest grit. Friends, games, and growth.
         </RetroDialog>
       )}
+      <motion.div 
+        whileHover={{ scale: 1.2 }}
+        style={{ position: 'absolute', top: '25%', right: '15%', fontSize: '40px', cursor: 'pointer', zIndex: 20 }}
+        onClick={() => setDialog('cle')}
+      >
+        🎮
+      </motion.div>
     </div>
   )
 
@@ -155,6 +171,14 @@ export default function App() {
           Lighthouse memory unlocked. Family stories, sea spray, and pixel sunsets.
         </RetroDialog>
       )}
+      {/* Clickable Overlay Icons (Absolutely positioned in the scene) */}
+      <motion.div 
+        whileHover={{ scale: 1.2, rotate: 10 }}
+        style={{ position: 'absolute', top: '20%', right: '10%', fontSize: '40px', cursor: 'pointer', zIndex: 20 }}
+        onClick={() => setDialog('iom')}
+      >
+        🏰
+      </motion.div>
     </div>
   )
 
@@ -189,9 +213,13 @@ export default function App() {
               onMouseEnter={() => play('blip')}
               onClick={() => {
                 play('collect')
-                const prizes = ['XP +10', 'Found a Ruby!', 'Nothing here...', 'A secret key!', 'Golden Nugget!', 'Coal...']
-                const prize = prizes[Math.floor(Math.random() * prizes.length)]
-                alert(`You mined ${ore}! ${prize}`)
+                if (ore === '💎') {
+                   setMiningGame(true)
+                } else {
+                   const prizes = ['XP +10', 'Found a Ruby!', 'Nothing here...', 'A secret key!', 'Golden Nugget!', 'Coal...']
+                   const prize = prizes[Math.floor(Math.random() * prizes.length)]
+                   alert(`You mined ${ore}! ${prize}`)
+                }
               }}
             >
               {ore}
@@ -219,11 +247,19 @@ export default function App() {
     <>
       <SoundBar />
       <Chameleon section={section} />
+      <PixelAvatar section={section} />
       <KonamiPortal visible={portal} onClose={() => setPortal(false)} />
+      {miningGame && <MiningGame onClose={() => setMiningGame(false)} />}
       <div className="hud">
         <span className="badge">{isDay ? '☀️ Sun' : '🌙 Moon'} SA Time</span>
         <span className="badge">Scroll: Sky → JHB → CLE → IOM → Jungle → Mine</span>
       </div>
+      {/* Animated Elements */}
+      <AnimatePresence>
+        {section === 'sky' && <SkyExtras />}
+        {section === 'jungle' && <JungleExtras />}
+      </AnimatePresence>
+
       <div className="world" style={{ height: '600vh' }}>
         {/* Parallax Backgrounds */}
         <BgLayer img={skyBg} y={skyY} zIndex={0} top="0" />
@@ -265,6 +301,109 @@ function BgLayer({ img, y, top }) {
         willChange: 'transform'
       }}
     />
+  )
+}
+
+function SkyExtras() {
+  return (
+    <motion.div
+      initial={{ x: '-10vw' }}
+      animate={{ x: '110vw' }}
+      transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+      style={{
+        position: 'fixed',
+        top: '15%',
+        left: 0,
+        fontSize: '40px',
+        zIndex: 5,
+        pointerEvents: 'none'
+      }}
+    >
+      🛩️
+    </motion.div>
+  )
+}
+
+function JungleExtras() {
+  return (
+    <>
+      {[...Array(5)].map((_, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, x: Math.random() * 100 + 'vw', y: Math.random() * 100 + 'vh' }}
+          animate={{ opacity: [0, 1, 0], x: '+20px', y: '-20px' }}
+          transition={{ duration: 3 + Math.random() * 2, repeat: Infinity, delay: Math.random() * 2 }}
+          style={{
+            position: 'fixed',
+            fontSize: '20px',
+            zIndex: 5,
+            pointerEvents: 'none',
+            filter: 'drop-shadow(0 0 5px yellow)'
+          }}
+        >
+          ✨
+        </motion.div>
+      ))}
+      <motion.div
+         animate={{ x: [0, 100, 0], y: [0, -20, 0] }}
+         transition={{ duration: 10, repeat: Infinity }}
+         style={{ position: 'fixed', top: '30%', right: '10%', fontSize: '40px', zIndex: 5 }}
+      >
+        🦜
+      </motion.div>
+    </>
+  )
+}
+
+function MiningGame({ onClose }) {
+  const [score, setScore] = useState(0)
+  const [timeLeft, setTimeLeft] = useState(10)
+
+  useEffect(() => {
+    if (timeLeft > 0) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [timeLeft])
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0, left: 0, width: '100%', height: '100%',
+      background: 'rgba(0,0,0,0.9)',
+      zIndex: 2000,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column'
+    }}>
+      <div style={{ fontSize: 30, marginBottom: 20 }}>💎 MINE THE GEMS! 💎</div>
+      <div style={{ fontSize: 20, marginBottom: 20 }}>Time: {timeLeft}s | Score: {score}</div>
+      
+      {timeLeft > 0 ? (
+        <motion.button
+          whileTap={{ scale: 0.9 }}
+          style={{
+            fontSize: 40,
+            padding: 20,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer'
+          }}
+          onClick={() => {
+             setScore(score + 1)
+             play('blip')
+          }}
+        >
+          ⛏️
+        </motion.button>
+      ) : (
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: 24, marginBottom: 20 }}>Time's Up! You mined {score} gems.</div>
+          <button className="pixel-button" onClick={onClose}>Close</button>
+        </div>
+      )}
+    </div>
   )
 }
 
