@@ -162,7 +162,7 @@ export default function App() {
           willChange: 'transform'
         }}
       />
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', zIndex: 10 }}>
           {sky}
           {cities}
           {jungle}
