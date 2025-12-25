@@ -10,6 +10,7 @@ import useKonami from './hooks/useKonami.js'
 import { isDayInSouthAfrica, ageFromDOB } from './utils/time.js'
 import { play } from './audio/engine.js'
 
+import skyBg from './assets/sky-bg.png'
 import jhbBg from './assets/jhb-bg.png'
 import cleBg from './assets/cle-bg.png'
 import iomBg from './assets/iom-bg.png'
@@ -19,14 +20,21 @@ import mineshaftBg from './assets/mineshaft-bg.png'
 export default function App() {
   const { scrollYProgress } = useScroll()
   
-  // Parallax offsets - subtle movement for each layer
-  const jhbY = useTransform(scrollYProgress, [0, 1], [0, -100])
-  const cleY = useTransform(scrollYProgress, [0, 1], [0, -200])
-  const iomY = useTransform(scrollYProgress, [0, 1], [0, -300])
-  const jungleY = useTransform(scrollYProgress, [0, 1], [0, -400])
-  const mineshaftY = useTransform(scrollYProgress, [0, 1], [0, -500])
+  // Adjusted Parallax:
+  // Instead of complex transforms, we lock each background to its viewport section
+  // but allow a slight "parallax" drag.
+  // The backgrounds are positioned absolutely at 0vh, 100vh, 200vh, etc.
+  // We use useTransform to create a small "drag" effect so they don't feel static,
+  // but they will definitely show up in their designated slot.
+  
+  const skyY = useTransform(scrollYProgress, [0, 0.2], [0, 50])
+  const jhbY = useTransform(scrollYProgress, [0.1, 0.3], [0, 50])
+  const cleY = useTransform(scrollYProgress, [0.3, 0.5], [0, 50])
+  const iomY = useTransform(scrollYProgress, [0.5, 0.7], [0, 50])
+  const jungleY = useTransform(scrollYProgress, [0.7, 0.9], [0, 50])
+  const mineshaftY = useTransform(scrollYProgress, [0.9, 1], [0, 50])
 
-  const [section, setSection] = useState('jhb')
+  const [section, setSection] = useState('sky')
   const [dialog, setDialog] = useState(null)
   const [portal, setPortal] = useState(false)
   const isDay = isDayInSouthAfrica()
@@ -38,10 +46,13 @@ export default function App() {
     const h = () => {
       const y = window.scrollY
       const h = window.innerHeight
-      if (y < h * 0.8) setSection('jhb')
-      else if (y < h * 1.8) setSection('cle')
-      else if (y < h * 2.8) setSection('iom')
-      else if (y < h * 3.8) setSection('jungle')
+      // 6 Sections total: Sky, JHB, CLE, IOM, Jungle, Mineshaft
+      // Thresholds are roughly at X.5 of each section
+      if (y < h * 0.5) setSection('sky')
+      else if (y < h * 1.5) setSection('jhb')
+      else if (y < h * 2.5) setSection('cle')
+      else if (y < h * 3.5) setSection('iom')
+      else if (y < h * 4.5) setSection('jungle')
       else setSection('mineshaft')
     }
     h()
@@ -66,15 +77,26 @@ export default function App() {
     return () => window.removeEventListener('mousemove', handleMove)
   }, [])
 
-  const jhbSection = (
+  const skySection = (
     <div className="section">
       <div>
         <div className="title">Oscar Brimelow</div>
         <div style={{ fontSize: 20, marginTop: 10 }}>
-          Age {age}. Johannesburg Start.
+          Age {age}. The Journey Begins.
         </div>
         <div style={{ marginTop: 18 }}>
            <SocialIcons />
+        </div>
+      </div>
+    </div>
+  )
+
+  const jhbSection = (
+    <div className="section">
+      <div>
+        <div className="title">Johannesburg</div>
+        <div style={{ fontSize: 18, marginTop: 8 }}>
+          Roots. Energy. Code.
         </div>
         <div style={{ marginTop: 24 }}>
           <button className="pixel-button" onMouseEnter={() => play('blip')} onClick={() => setDialog('jhb')}>
@@ -194,17 +216,19 @@ export default function App() {
       <KonamiPortal visible={portal} onClose={() => setPortal(false)} />
       <div className="hud">
         <span className="badge">{isDay ? '☀️ Sun' : '🌙 Moon'} SA Time</span>
-        <span className="badge">Scroll: JHB → CLE → IOM → Jungle → Mine</span>
+        <span className="badge">Scroll: Sky → JHB → CLE → IOM → Jungle → Mine</span>
       </div>
-      <div className="world" style={{ height: '500vh' }}>
+      <div className="world" style={{ height: '600vh' }}>
         {/* Parallax Backgrounds */}
-        <BgLayer img={jhbBg} y={jhbY} zIndex={0} top="0" />
-        <BgLayer img={cleBg} y={cleY} zIndex={0} top="100vh" />
-        <BgLayer img={iomBg} y={iomY} zIndex={0} top="200vh" />
-        <BgLayer img={jungleBg} y={jungleY} zIndex={0} top="300vh" />
-        <BgLayer img={mineshaftBg} y={mineshaftY} zIndex={0} top="400vh" />
+        <BgLayer img={skyBg} y={skyY} zIndex={0} top="0" />
+        <BgLayer img={jhbBg} y={jhbY} zIndex={0} top="100vh" />
+        <BgLayer img={cleBg} y={cleY} zIndex={0} top="200vh" />
+        <BgLayer img={iomBg} y={iomY} zIndex={0} top="300vh" />
+        <BgLayer img={jungleBg} y={jungleY} zIndex={0} top="400vh" />
+        <BgLayer img={mineshaftBg} y={mineshaftY} zIndex={0} top="500vh" />
 
         <div style={{ position: 'relative', zIndex: 10 }}>
+          {skySection}
           {jhbSection}
           {cleSection}
           {iomSection}
@@ -226,7 +250,7 @@ function BgLayer({ img, y, top }) {
         top: top,
         left: 0,
         width: '100%',
-        height: '120vh', // Slight overlap
+        height: '100vh',
         objectFit: 'cover',
         objectPosition: 'center',
         zIndex: 0,
