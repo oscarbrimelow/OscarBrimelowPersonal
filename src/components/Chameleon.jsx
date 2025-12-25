@@ -1,17 +1,10 @@
 import { motion } from 'framer-motion'
 import { useGame } from '../context/GameContext'
-import chameleonImg from '../assets/chameleon.png'
+import chameleonImg from '../assets/chameleom.png'
 
-export default function Chameleon({ section }) {
+export default function Chameleon() {
   const { handleChameleonClick } = useGame()
   
-  // Dynamic filters based on section
-  const filterStyle = section === 'sky' 
-    ? 'brightness(0) saturate(100%) invert(48%) sepia(91%) saturate(2253%) hue-rotate(170deg) brightness(98%) contrast(101%)' // Blue
-    : section === 'jungle'
-    ? 'brightness(0) saturate(100%) invert(69%) sepia(61%) saturate(543%) hue-rotate(85deg) brightness(96%) contrast(90%)' // Green
-    : 'brightness(0.7)' // Grey/Dim
-
   return (
     <motion.div 
       onClick={handleChameleonClick}
@@ -43,8 +36,6 @@ export default function Chameleon({ section }) {
           width: '100%', 
           height: 'auto',
           imageRendering: 'pixelated', // Keep it crisp
-          filter: filterStyle,
-          transition: 'filter 0.5s ease'
         }} 
       />
     </motion.div>

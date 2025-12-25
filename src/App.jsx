@@ -339,7 +339,7 @@ function MainGame() {
     <div className={theme === 'gameboy' ? 'theme-gameboy' : ''}>
       <PlayerHUD isShaking={isShaking} />
       <BlackberryPhone />
-      <Chameleon section={section} />
+      <Chameleon />
       <KonamiPortal visible={portal} onClose={() => setPortal(false)} />
       {guideOpen && <WorldGuide onClose={() => setGuideOpen(false)} />}
       
