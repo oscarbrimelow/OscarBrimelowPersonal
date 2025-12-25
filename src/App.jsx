@@ -128,54 +128,36 @@ export default function App() {
         <span className="badge">Scroll to explore</span>
       </div>
       <div className="world">
-        <motion.div className="layer" style={{ y: skyY, background:
-          'linear-gradient(#59d1ff, #8be1ff)' }}>
-          <div style={{ position: 'absolute', inset: 0 }}>
-            <svg width="100%" height="100%">
-              <circle cx="12%" cy="20%" r="60" fill={isDay ? '#ffe066' : '#b6b6ff'} />
-              <g fill="#fff">
-                <rect x="30%" y="26%" width="120" height="18"/>
-                <rect x="34%" y="23%" width="60" height="16"/>
-                <rect x="60%" y="40%" width="160" height="22"/>
-                <rect x="64%" y="37%" width="70" height="18"/>
-              </g>
-            </svg>
-          </div>
-        </motion.div>
-        <motion.div className="layer" style={{ y: cityY, background:
-          'linear-gradient(#7ac6f7, #4b7da1)' }}>
-          <div style={{ position: 'absolute', inset: 0 }}>
-            <svg width="100%" height="100%">
-              <g fill="#222">
-                <rect x="10%" y="60%" width="12%" height="30%"/>
-                <rect x="24%" y="55%" width="16%" height="35%"/>
-                <rect x="42%" y="58%" width="10%" height="32%"/>
-                <rect x="60%" y="57%" width="18%" height="33%"/>
-                <rect x="80%" y="62%" width="12%" height="28%"/>
-              </g>
-              <rect x="78%" y="52%" width="3%" height="10%" fill="#b0b0b0"/>
-              <rect x="78%" y="49%" width="3%" height="3%" fill="#fff"/>
-            </svg>
-          </div>
-        </motion.div>
-        <motion.div className="layer" style={{ y: jungleY, background:
-          'linear-gradient(#0f3d2e, #07221a)' }}>
-          <div style={{ position: 'absolute', inset: 0 }}>
-            <svg width="100%" height="100%">
-              <g fill="#0b7a56">
-                <rect x="8%" y="70%" width="12%" height="20%"/>
-                <rect x="20%" y="68%" width="10%" height="22%"/>
-                <rect x="32%" y="72%" width="14%" height="18%"/>
-                <rect x="56%" y="70%" width="16%" height="20%"/>
-                <rect x="76%" y="69%" width="12%" height="21%"/>
-              </g>
-              <g>
-                <rect x="45%" y="50%" width="6%" height="30%" fill="#1fb3ff"/>
-                <rect x="46%" y="50%" width="4%" height="30%" fill="#7fdcff"/>
-              </g>
-            </svg>
-          </div>
-        </motion.div>
+        {/* Parallax Layers - Now using Real Images */}
+        <motion.div 
+          className="fixed inset-0 w-full h-[120vh] bg-cover bg-bottom z-0"
+          style={{ 
+            y: skyY,
+            backgroundImage: "url('/sky-bg.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center bottom'
+          }}
+        />
+        <motion.div 
+          className="fixed inset-0 w-full h-[120vh] bg-cover bg-bottom z-0"
+          style={{ 
+            y: cityY,
+            backgroundImage: "url('/city-bg.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center bottom',
+            top: '100vh' // Starts below the sky
+          }}
+        />
+        <motion.div 
+          className="fixed inset-0 w-full h-[150vh] bg-cover bg-top z-0"
+          style={{ 
+            y: jungleY,
+            backgroundImage: "url('/jungle-bg.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center top',
+            top: '200vh' // Starts below the city
+          }}
+        />
         <div style={{ position: 'relative' }}>
           {sky}
           {cities}
