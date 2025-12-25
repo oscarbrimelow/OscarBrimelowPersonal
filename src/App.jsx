@@ -10,9 +10,11 @@ import useKonami from './hooks/useKonami.js'
 import { isDayInSouthAfrica, ageFromDOB } from './utils/time.js'
 import { play } from './audio/engine.js'
 
-import skyBg from './assets/sky-bg.png'
-import cityBg from './assets/city-bg.png'
-import jungleBg from './assets/jungle-bg.png'
+// Use public folder assets with explicit base URL for GitHub Pages reliability
+const BASE_URL = import.meta.env.BASE_URL
+const skyBg = `${BASE_URL}sky-bg.png`
+const cityBg = `${BASE_URL}city-bg.png`
+const jungleBg = `${BASE_URL}jungle-bg.png`
 
 export default function App() {
   const { scrollYProgress } = useScroll()
@@ -132,7 +134,7 @@ export default function App() {
         <span className="badge">Scroll to explore</span>
       </div>
       <div className="world">
-        {/* Parallax Layers - Now using Real Images */}
+        {/* Parallax Layers - Now using Real Images from Public Folder */}
       <motion.div 
         className="fixed inset-0 w-full h-[120vh] z-0 pointer-events-none"
         style={{ 
@@ -141,7 +143,8 @@ export default function App() {
           backgroundSize: 'cover',
           backgroundPosition: 'center bottom',
           backgroundRepeat: 'no-repeat',
-          willChange: 'transform'
+          willChange: 'transform',
+          backgroundColor: '#2a2a4e' // Fallback Dark Sky
         }}
       />
       <motion.div 
@@ -153,7 +156,8 @@ export default function App() {
           backgroundPosition: 'center bottom',
           backgroundRepeat: 'no-repeat',
           top: '100vh', // Starts below the sky
-          willChange: 'transform'
+          willChange: 'transform',
+          backgroundColor: '#1a1a2e' // Fallback City Dark
         }}
       />
       <motion.div 
@@ -165,7 +169,8 @@ export default function App() {
           backgroundPosition: 'center top',
           backgroundRepeat: 'no-repeat',
           top: '200vh', // Starts below the city
-          willChange: 'transform'
+          willChange: 'transform',
+          backgroundColor: '#0a1a0a' // Fallback Jungle Green
         }}
       />
         <div style={{ position: 'relative' }}>
