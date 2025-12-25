@@ -195,13 +195,6 @@ function MainGame() {
           Where code and hustle meet. Coffee-fueled builds and big city energy.
         </RetroDialog>
       )}
-      <motion.div 
-        whileHover={{ scale: 1.2, y: -5 }}
-        style={{ position: 'absolute', top: '30%', left: '10%', fontSize: '40px', cursor: 'pointer', zIndex: 20 }}
-        onClick={() => setDialog('jhb')}
-      >
-        🏙️
-      </motion.div>
     </div>
   )
 
@@ -223,13 +216,6 @@ function MainGame() {
           Rust belt charm with Midwest grit. Friends, games, and growth.
         </RetroDialog>
       )}
-      <motion.div 
-        whileHover={{ scale: 1.2 }}
-        style={{ position: 'absolute', top: '25%', right: '15%', fontSize: '40px', cursor: 'pointer', zIndex: 20 }}
-        onClick={() => setDialog('cle')}
-      >
-        🎮
-      </motion.div>
     </div>
   )
 
@@ -251,13 +237,6 @@ function MainGame() {
           Lighthouse memory unlocked. Family stories, sea spray, and pixel sunsets.
         </RetroDialog>
       )}
-      <motion.div 
-        whileHover={{ scale: 1.2, rotate: 10 }}
-        style={{ position: 'absolute', top: '20%', right: '10%', fontSize: '40px', cursor: 'pointer', zIndex: 20 }}
-        onClick={() => setDialog('iom')}
-      >
-        🏰
-      </motion.div>
     </div>
   )
 
@@ -331,7 +310,6 @@ function MainGame() {
       <KonamiPortal visible={portal} onClose={() => setPortal(false)} />
       {miningGame && <MiningGame onClose={() => setMiningGame(false)} />}
       <AnimatePresence>
-        {section === 'sky' && <SkyExtras />}
         {section === 'jungle' && <JungleExtras />}
       </AnimatePresence>
 
@@ -384,26 +362,6 @@ function BgLayer({ img, y, x, top, blend }) {
         WebkitMaskRepeat: 'no-repeat'
       }}
     />
-  )
-}
-
-function SkyExtras() {
-  return (
-    <motion.div
-      initial={{ x: '-10vw' }}
-      animate={{ x: '110vw' }}
-      transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-      style={{
-        position: 'fixed',
-        top: '15%',
-        left: 0,
-        fontSize: '40px',
-        zIndex: 5,
-        pointerEvents: 'none'
-      }}
-    >
-      🛩️
-    </motion.div>
   )
 }
 
