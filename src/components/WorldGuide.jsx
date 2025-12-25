@@ -1,63 +1,98 @@
 import { motion } from 'framer-motion'
+import me8bit from '../assets/me8bit.png'
+import thoughtBubble from '../assets/Thought Bubble.png'
 
 export default function WorldGuide({ onClose }) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       style={{
         position: 'fixed',
         top: 0, left: 0, right: 0, bottom: 0,
-        background: 'rgba(0,0,0,0.85)',
-        zIndex: 2500,
+        background: 'rgba(0,0,0,0.7)',
+        zIndex: 3000,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 20
+        pointerEvents: 'auto'
       }}
       onClick={onClose}
     >
       <div 
-        className="retro-dialog" 
-        onClick={e => e.stopPropagation()}
-        style={{
-          maxWidth: 600,
-          width: '100%',
-          maxHeight: '80vh',
-          overflowY: 'auto'
+        style={{ 
+          position: 'relative', 
+          width: 'min(90vw, 600px)', 
+          height: 'min(80vh, 500px)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center'
         }}
+        onClick={e => e.stopPropagation()}
       >
-        <div className="title" style={{ marginBottom: 20, textAlign: 'center', color: '#00ffd0' }}>
-          🌍 WORLD GUIDE
-        </div>
-        
-        <div style={{ lineHeight: 1.6, fontFamily: "'Inter', sans-serif" }}>
-          <p>
-            <strong>Welcome, Traveler.</strong>
-          </p>
-          <p>
-            This is not just a website. It is an interactive projection of Oscar's life, work, and journey.
-            You are currently exploring a digital parallax world built with code and creativity.
-          </p>
+        {/* Thought Bubble Container */}
+        <div style={{ 
+          position: 'relative', 
+          width: '100%', 
+          flex: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <img 
+            src={thoughtBubble} 
+            alt="Guide Bubble" 
+            style={{ 
+              width: '100%', 
+              height: '100%', 
+              objectFit: 'contain',
+              filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.5))'
+            }} 
+          />
           
-          <h3 style={{ marginTop: 20, color: '#fff' }}>🚀 System Features</h3>
-          <ul style={{ paddingLeft: 20, marginTop: 10 }}>
-            <li><strong>Parallax Engine:</strong> Depth-based scrolling through 6 unique biomes.</li>
-            <li><strong>Day/Night Cycle:</strong> Real-time lighting synced to South African time.</li>
-            <li><strong>Audio Engine:</strong> Context-aware soundscapes and SFX.</li>
-            <li><strong>Economy System:</strong> Mine resources, earn coins, and collect loot.</li>
-          </ul>
-
-          <h3 style={{ marginTop: 20, color: '#fff' }}>⚠️ Secrets & Anomalies</h3>
-          <p style={{ fontStyle: 'italic', color: '#aaa' }}>
-            "There are secrets buried in the code and hidden in the shadows. Look for the unusual to find the hidden."
-          </p>
-          
-          <div style={{ marginTop: 30, textAlign: 'center' }}>
-            <button className="pixel-button" onClick={onClose}>Close Guide</button>
+          {/* Text Content inside Bubble */}
+          <div style={{
+            position: 'absolute',
+            top: '45%', 
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '65%',
+            height: '60%',
+            overflowY: 'auto',
+            color: '#000', // Assuming light bubble
+            fontFamily: "'Inter', sans-serif",
+            fontSize: 'clamp(12px, 2vw, 14px)',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 8
+          }}>
+             <h3 style={{ margin: 0, fontFamily: "'Press Start 2P', cursive", fontSize: 16 }}>WORLD GUIDE</h3>
+             <p style={{ margin: 0 }}><strong>Welcome, Traveler.</strong></p>
+             <p style={{ margin: 0 }}>This is an interactive parallax world. Scroll to explore different biomes.</p>
+             <ul style={{ textAlign: 'left', paddingLeft: 20, margin: '5px 0' }}>
+               <li><strong>Phone:</strong> Check apps & inventory.</li>
+               <li><strong>Shop:</strong> Buy items & upgrades.</li>
+               <li><strong>Secrets:</strong> Find hidden codes.</li>
+             </ul>
+             <p style={{ margin: 0, fontSize: 10, fontStyle: 'italic' }}>"Click anywhere to close"</p>
           </div>
         </div>
+
+        {/* 8-bit Character */}
+        <img 
+          src={me8bit} 
+          alt="Oscar 8-bit" 
+          style={{ 
+            height: '120px',
+            alignSelf: 'flex-start',
+            marginLeft: '10%',
+            marginTop: '-20px', // Overlap slightly with bubble tail if possible, or just below
+            filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.5))'
+          }} 
+        />
       </div>
     </motion.div>
   )

@@ -8,6 +8,7 @@ import RetroDialog from './components/RetroDialog.jsx'
 import SocialIcons from './components/SocialIcons.jsx'
 import ProjectCards from './components/ProjectCards.jsx'
 import KonamiPortal from './components/KonamiPortal.jsx'
+import WorldGuide from './components/WorldGuide.jsx'
 import useKonami from './hooks/useKonami.js'
 import { isDayInSouthAfrica, ageFromDOB } from './utils/time.js'
 import { play } from './audio/engine.js'
@@ -107,6 +108,7 @@ function MainGame() {
   const [dialog, setDialog] = useState(null)
   const [portal, setPortal] = useState(false)
   const [miningGame, setMiningGame] = useState(false)
+  const [guideOpen, setGuideOpen] = useState(false)
   const isDay = isDayInSouthAfrica()
   const age = ageFromDOB('2004-08-08')
 
@@ -172,6 +174,19 @@ function MainGame() {
         </div>
         <div style={{ marginTop: 18 }}>
            <SocialIcons />
+           <div style={{ marginTop: 16 }}>
+             <button 
+               className="pixel-button" 
+               style={{ padding: '8px 16px', fontSize: '14px' }}
+               onClick={() => {
+                 play('blip')
+                 setGuideOpen(true)
+               }}
+               onMouseEnter={() => play('blip')}
+             >
+               📜 Guide
+             </button>
+           </div>
         </div>
       </div>
     </div>
@@ -308,6 +323,7 @@ function MainGame() {
       <BlackberryPhone />
       <Chameleon section={section} />
       <KonamiPortal visible={portal} onClose={() => setPortal(false)} />
+      {guideOpen && <WorldGuide onClose={() => setGuideOpen(false)} />}
       {miningGame && <MiningGame onClose={() => setMiningGame(false)} />}
       <AnimatePresence>
         {section === 'jungle' && <JungleExtras />}
