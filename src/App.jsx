@@ -233,10 +233,6 @@ export default function App() {
         </div>
 
         <div style={{ marginTop: 24 }}>
-           <SpotifyEmbed />
-        </div>
-
-        <div style={{ marginTop: 24 }}>
            <ImdbMarquee />
         </div>
       </div>
@@ -431,51 +427,28 @@ function Notebook() {
   )
 }
 
-function SpotifyEmbed() {
+function Notebook() {
+  const [text, setText] = useState(() => localStorage.getItem('notebook') || '')
+  useEffect(() => { localStorage.setItem('notebook', text) }, [text])
   return (
-    <div style={{ width: 'min(800px, 92vw)' }}>
-      <iframe
-        style={{ borderRadius: 12 }}
-        src="https://open.spotify.com/embed/user/47xzzm4tm5meveaqo7h1zrv01?utm_source=generator"
-        width="100%"
-        height="152"
-        frameBorder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"
-        title="Spotify"
-      ></iframe>
-    </div>
+    <textarea
+      value={text}
+      onChange={e => setText(e.target.value)}
+      placeholder="Random thoughts..."
+      style={{
+        width: 'min(800px, 92vw)',
+        height: 120,
+        background: '#0c0c0c',
+        border: '3px solid #2b2b2b',
+        borderRadius: 8,
+        color: '#eaffff',
+        padding: 12,
+        fontFamily: 'VT323, monospace',
+        fontSize: 18,
+        marginTop: 10
+      }}
+    />
   )
 }
 
 function ImdbMarquee() {
-  const [items] = useState([
-    'Blade Runner',
-    'Rick & Morty',
-    'Everything Everywhere All at Once',
-    'The Matrix',
-    'Interstellar'
-  ])
-  return (
-    <div style={{ width: 'min(800px, 92vw)' }}>
-      <div style={{
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        border: '3px solid #2b2b2b',
-        borderRadius: 8,
-        padding: '8px 12px',
-        background: '#0c0c0c'
-      }}>
-        <motion.div
-          initial={{ x: '100%' }}
-          animate={{ x: '-100%' }}
-          transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-        >
-          {items.map((it, i) => (
-            <span key={i} style={{ marginRight: 36, fontSize: 18 }}>🎬 {it}</span>
-          ))}
-        </motion.div>
-      </div>
-    </div>
-  )
-}
