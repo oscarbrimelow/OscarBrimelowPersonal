@@ -307,6 +307,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
         position: 'absolute',
         top: 0, left: 0,
         width: '100%', height: '100%',
+        zIndex: 1,
         transform: `translateX(-${cameraX}px)`,
         transition: 'transform 0.05s linear' // Smooth out camera jitter
       }}>
@@ -321,6 +322,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
             backgroundImage: `url(${jhbground})`,
             backgroundRepeat: 'repeat-x',
             backgroundSize: 'auto 100%',
+            zIndex: 10
             // borderTop: '4px solid #fff' // Removed white line
         }}></div>
 
@@ -344,7 +346,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        zIndex: 10
+                        zIndex: 100
                     }}
                  >
                      {item.iconImg ? (
@@ -367,7 +369,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
             top: player.y + 15, // Offset down to stand firmly on floor
             width: PLAYER_SIZE,
             height: PLAYER_SIZE,
-            zIndex: 20,
+            zIndex: 200,
             transform: `scaleX(${player.facingRight ? 1 : -1})`, // Flip sprite
             transition: 'transform 0.1s'
         }}>
