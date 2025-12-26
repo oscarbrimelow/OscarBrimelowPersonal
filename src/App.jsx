@@ -21,6 +21,7 @@ import iomBg from './assets/iom-bg.png'
 import jungleBg from './assets/jungle-bg.png'
 import mineshaftBg from './assets/mineshaft-bg.png'
 import tardisCursor from './assets/tardis-cursor.svg'
+import me8bit from './assets/me8bit.png'
 
 export default function App() {
   return (
