@@ -358,7 +358,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
         {/* Items */}
         {items.map(item => {
              // Hide collected items unless they are landmarks (which stay visible)
-             if (collectedSceneItems.includes(item.id) && item.type !== 'landmark') return null
+             // if (collectedSceneItems.includes(item.id) && item.type !== 'landmark') return null
              
              const x = (item.x / 100) * WORLD_WIDTH
              const y = (item.y / 100) * (floorY + 100)
@@ -368,10 +368,10 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
              const height = item.height ? item.height * 5 : 120
              
              return (
-                 <motion.div
+                 <div
                     key={item.id}
-                    animate={{ y: [y, y - 10, y] }} // Float animation
-                    transition={{ duration: 2, repeat: Infinity }}
+                    // animate={{ y: [y, y - 10, y] }} // Float animation
+                    // transition={{ duration: 2, repeat: Infinity }}
                     style={{
                         position: 'absolute',
                         left: x,
@@ -380,7 +380,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        zIndex: 1000, 
+                        zIndex: 5000, 
                         // border: '4px solid blue', // DEBUG REMOVED
                         // background: 'rgba(0, 255, 255, 0.5)', // DEBUG REMOVED
                     }}
@@ -397,7 +397,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
                      ) : (
                         <div style={{ fontSize: '60px' }}>{item.icon || '❓'}</div>
                      )}
-                 </motion.div>
+                 </div>
              )
         })}
 
