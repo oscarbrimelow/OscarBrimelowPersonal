@@ -167,6 +167,13 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
   }, [player, items, collectedSceneItems, floorY]) // Check on player update
 
   const handleItemCollect = (item) => {
+    // Check cooldown for reusable items (landmarks, inspectables)
+    if (item.type === 'landmark' || item.type === 'inspect') {
+      const lastTime = lastTriggeredRef.current[item.id] || 0
+      if (Date.now() - lastTime < 30000) return // 30s cooldown
+      lastTriggeredRef.current[item.id] = Date.now()
+    }
+
     play('collect')
     if (item.type === 'collectible') {
       const added = markItemAsCollected(item.id)
