@@ -29,8 +29,9 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
   
   const [floorY, setFloorY] = useState(getFloorY())
   const [cameraX, setCameraX] = useState(0)
-  // keys is now a ref to prevent re-renders
-  // const [keys, setKeys] = useState({}) 
+  
+  // keys is now a ref to prevent re-renders causing jitter
+  const keysRef = useRef({}) 
   const requestRef = useRef()
   const playerRef = useRef(player) // Ref for loop access without dependencies
   const [activeLandmark, setActiveLandmark] = useState(null)
@@ -58,8 +59,8 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
 
   // Input Handling
   useEffect(() => {
-    const handleKeyDown = (e) => setKeys(k => ({ ...k, [e.code]: true }))
-    const handleKeyUp = (e) => setKeys(k => ({ ...k, [e.code]: false }))
+    const handleKeyDown = (e) => { keysRef.current[e.code] = true }
+    const handleKeyUp = (e) => { keysRef.current[e.code] = false }
     
     window.addEventListener('keydown', handleKeyDown)
     window.addEventListener('keyup', handleKeyUp)
@@ -74,11 +75,14 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
     let lastTime = performance.now()
 
     const update = (time) => {
-      const dt = (time - lastTime) / 16.67 // Normalize to ~60fps
+      // Cap dt to prevent massive jumps (e.g. after alert pause)
+      const maxDt = 100 // max 100ms frame time
+      const dtRaw = time - lastTime
+      const dt = Math.min(dtRaw, maxDt) / 16.67
       lastTime = time
 
       const p = { ...playerRef.current }
-      const k = keys
+      const k = keysRef.current
 
       // Horizontal Movement
       if (k['ArrowRight'] || k['KeyD']) {
@@ -133,7 +137,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
 
     requestRef.current = requestAnimationFrame(update)
     return () => cancelAnimationFrame(requestRef.current)
-  }, [keys, floorY])
+  }, [floorY]) // Removed keys dependency to prevent loop restart
 
   // Item Collection Check
   useEffect(() => {
@@ -226,18 +230,19 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
         transition: 'transform 0.05s linear' // Smooth out camera jitter
       }}>
         
-        {/* Parallax Background (Infinite Tiling) */}
+        {/* Parallax Background (Infinite Tiling) - Fixed relative to viewport to prevent running out */}
         <div style={{
-            position: 'absolute',
+            position: 'fixed',
             top: 0, 
             left: 0,
-            width: '100%', 
-            height: '100%',
+            width: '100vw', 
+            height: '100vh',
             backgroundImage: `url(${bgImage})`,
             backgroundRepeat: 'repeat-x',
             backgroundSize: 'auto 100%',
-            backgroundPositionX: cameraX * 0.5, // Parallax effect (moves right relative to container to appear slower)
-            willChange: 'background-position'
+            backgroundPositionX: -cameraX * 0.5, // Move background slower than camera
+            zIndex: 0,
+            pointerEvents: 'none'
         }} />
 
         {/* Floor (Infinite-ish) */}
@@ -250,7 +255,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
             backgroundImage: `url(${jhbground})`,
             backgroundRepeat: 'repeat-x',
             backgroundSize: 'auto 100%',
-            borderTop: '4px solid #fff'
+            // borderTop: '4px solid #fff' // Removed white line
         }}></div>
 
         {/* Items */}
@@ -283,7 +288,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
         <div style={{
             position: 'absolute',
             left: player.x,
-            top: player.y,
+            top: player.y + 15, // Offset down to stand firmly on floor
             width: PLAYER_SIZE,
             height: PLAYER_SIZE,
             zIndex: 20,
@@ -318,10 +323,15 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
             }}
             onClick={e => e.stopPropagation()}
           >
-            <h2>{activeLandmark.name}</h2>
-            <img src={activeLandmark.image} style={{ width: '100%', maxHeight: 300, objectFit: 'cover' }} />
-            <p>{activeLandmark.description}</p>
-            <button onClick={() => setActiveLandmark(null)} className="pixel-button">CLOSE</button>
+             <h2 style={{ fontSize: 24, marginBottom: 20 }}>{activeLandmark.name}</h2>
+             {activeLandmark.image && (
+               <img 
+                 src={activeLandmark.image} 
+                 style={{ width: '100%', maxHeight: 300, objectFit: 'cover', marginBottom: 20, border: '2px solid white' }} 
+               />
+             )}
+             <p style={{ lineHeight: 1.5, marginBottom: 20 }}>{activeLandmark.description}</p>
+             <button className="pixel-button" onClick={() => setActiveLandmark(null)}>CLOSE</button>
           </div>
         </div>
       )}
