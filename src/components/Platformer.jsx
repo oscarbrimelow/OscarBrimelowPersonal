@@ -138,27 +138,23 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
     const p = playerRef.current
     
     // Check collision with items
-    // We map existing items (0-100%) to a wider world (e.g. 0-2000px)
-    // Let's assume the world is 3000px wide for now
-    const WORLD_WIDTH = 3000
+    // We map existing items (0-100%) to a wider world
+    const WORLD_WIDTH = 10000 // Increased world size
     
     items.forEach(item => {
       if (collectedSceneItems.includes(item.id)) return
 
       // Map item % to World Pixels
       const itemX = (item.x / 100) * WORLD_WIDTH
-      // Items float above floor relative to their original Y% (inverted for ground up?)
-      // Original Y=0 (top) Y=100 (bottom)
-      // Let's keep original mapping but scaled to new height
-      // const itemY = (item.y / 100) * SCREEN_HEIGHT (OLD)
-      const itemY = (item.y / 100) * (floorY + 100) // Rough approximation
+      // Items float above floor relative to their original Y%
+      const itemY = (item.y / 100) * (floorY + 100) 
       
       // Distance check
       const dx = p.x - itemX
       const dy = p.y - itemY
       const dist = Math.sqrt(dx*dx + dy*dy)
 
-      if (dist < 120) { // Collection Radius (Increased for bigger player)
+      if (dist < 150) { // Collection Radius (Increased for bigger player)
         handleItemCollect(item)
       }
     })
@@ -171,9 +167,10 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
       if (added) {
           if (item.item) {
               const invAdded = addToInventory(item.item)
-              if (invAdded) alert(item.message)
+              // Use setTimeout to avoid blocking the render loop immediately
+              if (invAdded) setTimeout(() => alert(item.message), 10)
           } else {
-              alert(item.message)
+              setTimeout(() => alert(item.message), 10)
           }
       }
     } else if (item.type === 'inspect') {
@@ -184,7 +181,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
   }
 
   // Render Helpers
-  const WORLD_WIDTH = 3000 // Match collision logic
+  const WORLD_WIDTH = 10000 // Match collision logic
 
   return (
     <div style={{
@@ -230,22 +227,23 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
         {/* Parallax Background (Infinite Tiling) */}
         <div style={{
             position: 'absolute',
-            top: 0, left: cameraX * 0.5, // Parallax effect (moves slower)
-            width: '200%', // Wide enough to cover
+            top: 0, 
+            left: 0,
+            width: '100%', 
             height: '100%',
-            display: 'flex'
-        }}>
-            {/* Repeat BG multiple times */}
-            {[...Array(6)].map((_, i) => (
-              <img key={i} src={bgImage} style={{ height: '100%', width: 'auto', objectFit: 'cover' }} />
-            ))}
-        </div>
+            backgroundImage: `url(${bgImage})`,
+            backgroundRepeat: 'repeat-x',
+            backgroundSize: 'auto 100%',
+            backgroundPositionX: cameraX * 0.5, // Parallax effect (moves right relative to container to appear slower)
+            willChange: 'background-position'
+        }} />
 
-        {/* Floor */}
-        <div style={{
+        {/* Floor (Infinite-ish) */}
+         <div style={{
             position: 'absolute',
-            left: 0, top: floorY,
-            width: WORLD_WIDTH + 1000,
+            left: -50000, // Start way back
+            top: floorY,
+            width: 200000, // Huge floor
             height: 200,
             background: `repeating-linear-gradient(45deg, #333 0, #333 10px, #444 10px, #444 20px)`,
             borderTop: '4px solid #fff'
