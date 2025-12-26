@@ -12,7 +12,7 @@ import WorldGuide from './components/WorldGuide.jsx'
 import SceneExplorer from './components/SceneExplorer.jsx'
 import useKonami from './hooks/useKonami.js'
 import { isDayInSouthAfrica, ageFromDOB } from './utils/time.js'
-import { play } from './audio/engine.js'
+import { play, initAudioContext } from './audio/engine.js'
 
 import skyBg from './assets/sky-bg.png'
 import jhbBg from './assets/jhb-bg.png'
@@ -140,6 +140,20 @@ function MainGame() {
   }, [section])
 
   useEffect(() => {
+    const resumeAudio = () => {
+      initAudioContext()
+      window.removeEventListener('click', resumeAudio)
+      window.removeEventListener('keydown', resumeAudio)
+    }
+    window.addEventListener('click', resumeAudio)
+    window.addEventListener('keydown', resumeAudio)
+    return () => {
+      window.removeEventListener('click', resumeAudio)
+      window.removeEventListener('keydown', resumeAudio)
+    }
+  }, [])
+
+  useEffect(() => {
     console.log("%cHey fellow dev, hope you like the pixels!", "font-family: 'Press Start 2P'; font-size: 16px; color: #00ffd0; background: #222; padding: 10px; border-radius: 4px;")
     document.body.style.cursor = `url('${tardisCursor}') 16 16, auto`
     
@@ -172,7 +186,30 @@ function MainGame() {
 
   const skySection = (
     <div className="section">
-      <div>
+      <div style={{ position: 'relative' }}>
+        <motion.img 
+          src={me8bit} 
+          alt="Pixel Oscar"
+          style={{ 
+            position: 'absolute',
+            top: -120,
+            left: '50%',
+            x: -180, // Framer motion uses x instead of transform translateX
+            width: 80, 
+            height: 80, 
+            imageRendering: 'pixelated',
+            zIndex: 20
+          }}
+          animate={{ 
+            rotate: [-5, 5, -5],
+            y: [0, -10, 0]
+          }}
+          transition={{ 
+            duration: 4, 
+            repeat: Infinity, 
+            ease: "easeInOut" 
+          }}
+        />
         <div className="title">Oscar Brimelow</div>
         <div style={{ fontSize: 20, marginTop: 10 }}>
           Age {age}. The Journey Begins.

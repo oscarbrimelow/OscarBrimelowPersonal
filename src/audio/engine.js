@@ -69,4 +69,10 @@ export function stopBgm() {
   if (sounds.bgm.playing()) sounds.bgm.stop()
 }
 
+export function initAudioContext() {
+  if (Howler.ctx && Howler.ctx.state !== 'running') {
+    Howler.ctx.resume()
+  }
+}
+
 export const nowPlaying = 'Chiptune Loop'
