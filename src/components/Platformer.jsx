@@ -170,7 +170,8 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
       top: 0, left: 0, right: 0, bottom: 0,
       background: '#87CEEB',
       overflow: 'hidden',
-      fontFamily: "'Press Start 2P', cursive"
+      fontFamily: "'Press Start 2P', cursive",
+      zIndex: 9999
     }}>
        {/* HUD: Close Button (Fixed Overlay) */}
        <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 50 }}>
