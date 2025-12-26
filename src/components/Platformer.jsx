@@ -340,12 +340,22 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
                         position: 'absolute',
                         left: x,
                         top: y,
-                        width: 50, height: 50,
-                        fontSize: '30px',
+                        width: 64, height: 64,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                         zIndex: 10
                     }}
                  >
-                     {item.icon || '❓'}
+                     {item.iconImg ? (
+                        <img 
+                            src={item.iconImg} 
+                            alt={item.name || 'item'} 
+                            style={{ width: '100%', height: '100%', objectFit: 'contain', imageRendering: 'pixelated' }}
+                        />
+                     ) : (
+                        <div style={{ fontSize: '30px' }}>{item.icon || '❓'}</div>
+                     )}
                  </motion.div>
              )
         })}

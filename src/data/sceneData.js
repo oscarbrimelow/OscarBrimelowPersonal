@@ -7,6 +7,28 @@ import laxeyWheelImg from '../assets/laxeywheel.jpg'
 import sulbyGlenImg from '../assets/sulbyglenhotel.jpg'
 import cucumberImg from '../assets/cucumberchameleonjungle.JPG'
 
+import coffeeImg from '../assets/Coffee.png'
+import graffitiImg from '../assets/graffiti.png'
+import biltongImg from '../assets/biltong.png'
+import krugerrandImg from '../assets/krugerrand.png'
+import rooibosImg from '../assets/rooibos.png'
+import streetSignImg from '../assets/street-sign.png'
+import arcadeTokenImg from '../assets/arcade-token.png'
+import pierogiImg from '../assets/pierogi.png'
+import arcadeCabinetImg from '../assets/arcade-cabinet.png'
+import seashellImg from '../assets/seashell.png'
+import motorbikeImg from '../assets/motorbike-model.png'
+import lighthouseImg from '../assets/lighthouse.png'
+import bananaImg from '../assets/banana.png'
+import parrotImg from '../assets/parrot.png'
+import mangoImg from '../assets/mango.png'
+import idolImg from '../assets/idol.png'
+import diamondImg from '../assets/diamond.png'
+import pickaxeImg from '../assets/pickaxe.png'
+import lanternImg from '../assets/lantern.png'
+import fireImg from '../assets/fire.png'
+import rockImg from '../assets/rock.png'
+
 export const sceneData = {
   jhb: {
     items: [
@@ -14,7 +36,8 @@ export const sceneData = {
         id: 'jhb_coffee', 
         x: 80, 
         y: 82, 
-        icon: '☕', 
+        icon: '☕',
+        iconImg: coffeeImg,
         type: 'collectible', 
         name: 'Strong Coffee', 
         item: '☕', 
@@ -26,14 +49,16 @@ export const sceneData = {
         y: 82, 
         width: 15, 
         height: 10, 
-        type: 'inspect', 
+        type: 'inspect',
+        iconImg: graffitiImg,
         message: 'Graffiti reads: "CODE IS ART"' 
       },
       { 
         id: 'jhb_biltong', 
         x: 60, 
         y: 82, 
-        icon: '🥩', 
+        icon: '🥩',
+        iconImg: biltongImg,
         type: 'collectible', 
         name: 'Biltong', 
         item: '🥩', 
@@ -43,7 +68,8 @@ export const sceneData = {
         id: 'jhb_krugerrand', 
         x: 35, 
         y: 82, 
-        icon: '🪙', 
+        icon: '🪙',
+        iconImg: krugerrandImg,
         type: 'collectible', 
         name: 'Krugerrand', 
         item: '🪙', 
@@ -53,7 +79,8 @@ export const sceneData = {
         id: 'jhb_rooibos', 
         x: 10, 
         y: 82, 
-        icon: '🍵', 
+        icon: '🍵',
+        iconImg: rooibosImg,
         type: 'collectible', 
         name: 'Rooibos Tea', 
         item: '🍵', 
@@ -64,6 +91,7 @@ export const sceneData = {
         x: 50,
         y: 82,
         icon: '🛑',
+        iconImg: streetSignImg,
         type: 'inspect',
         message: 'Street Sign: "Caution: Developers at work"'
       },
@@ -107,6 +135,7 @@ export const sceneData = {
         x: 45,
         y: 84,
         icon: '🔥',
+        iconImg: fireImg,
         type: 'obstacle',
         message: 'Too hot! Stay away from the fire!'
       },
@@ -115,6 +144,7 @@ export const sceneData = {
         x: 65,
         y: 84,
         icon: '🪨',
+        iconImg: rockImg,
         type: 'obstacle',
         message: 'You tripped over a rock!'
       }
@@ -126,7 +156,8 @@ export const sceneData = {
         id: 'cle_token', 
         x: 50, 
         y: 85, 
-        icon: '🪙', 
+        icon: '🪙',
+        iconImg: arcadeTokenImg,
         type: 'collectible', 
         name: 'Arcade Token', 
         item: '🪙', 
@@ -136,7 +167,8 @@ export const sceneData = {
         id: 'cle_pierogi', 
         x: 70, 
         y: 65, 
-        icon: '🥟', 
+        icon: '🥟',
+        iconImg: pierogiImg,
         type: 'collectible', 
         name: 'Pierogis', 
         item: '🥟', 
@@ -147,6 +179,7 @@ export const sceneData = {
         x: 20,
         y: 50,
         icon: '🕹️',
+        iconImg: arcadeCabinetImg,
         type: 'inspect',
         message: 'A vintage Pac-Man machine. High Score: OSCAR'
       },
@@ -180,7 +213,8 @@ export const sceneData = {
         id: 'iom_shell', 
         x: 30, 
         y: 90, 
-        icon: '🐚', 
+        icon: '🐚',
+        iconImg: seashellImg,
         type: 'collectible', 
         name: 'Seashell', 
         item: '🐚', 
@@ -190,7 +224,8 @@ export const sceneData = {
         id: 'iom_motorbike', 
         x: 75, 
         y: 60, 
-        icon: '🏍️', 
+        icon: '🏍️',
+        iconImg: motorbikeImg,
         type: 'collectible', 
         name: 'Model Motorbike', 
         item: '🏍️', 
@@ -200,7 +235,8 @@ export const sceneData = {
         id: 'iom_manx_biltong', 
         x: 50, 
         y: 70, 
-        icon: '🥩', 
+        icon: '🥩',
+        iconImg: biltongImg,
         type: 'collectible', 
         name: 'Manx Biltong', 
         item: '🥩', 
@@ -211,6 +247,7 @@ export const sceneData = {
         x: 10,
         y: 30,
         icon: '🚨',
+        iconImg: lighthouseImg,
         type: 'inspect',
         message: 'The Point of Ayre Lighthouse blinking in the distance.'
       },
@@ -244,7 +281,8 @@ export const sceneData = {
         id: 'jungle_banana', 
         x: 60, 
         y: 50, 
-        icon: '🍌', 
+        icon: '🍌',
+        iconImg: bananaImg,
         type: 'collectible', 
         name: 'Banana', 
         item: '🍌', 
@@ -255,6 +293,7 @@ export const sceneData = {
         x: 85,
         y: 20,
         icon: '🦜',
+        iconImg: parrotImg,
         type: 'inspect',
         message: 'Squawk! Hello World! Squawk!'
       },
@@ -263,9 +302,10 @@ export const sceneData = {
         x: 25,
         y: 60,
         icon: '🥭',
-        type: 'collectible',
-        name: 'Exotic Fruit',
-        item: '🥭',
+        iconImg: mangoImg,
+        type: 'collectible', 
+        name: 'Exotic Fruit', 
+        item: '🥭', 
         message: 'A sweet jungle mango! (+20 HP)'
       },
       {
@@ -273,7 +313,8 @@ export const sceneData = {
         x: 45,
         y: 30,
         icon: '🗿',
-        type: 'collectible',
+        iconImg: idolImg,
+        type: 'collectible', 
         name: 'Ancient Idol',
         item: '🗿',
         message: 'A mysterious artifact...'
@@ -286,6 +327,7 @@ export const sceneData = {
         height: 15,
         type: 'landmark',
         name: 'Cucumber the Chameleon',
+        iconImg: chameleonImg,
         image: cucumberImg,
         description: 'This is Cucumber, Oscar\'s pet chameleon!'
       }
@@ -297,7 +339,8 @@ export const sceneData = {
         id: 'mine_diamond', 
         x: 90, 
         y: 80, 
-        icon: '💎', 
+        icon: '💎',
+        iconImg: diamondImg,
         type: 'collectible', 
         name: 'Hidden Diamond', 
         item: '💎', 
@@ -308,6 +351,7 @@ export const sceneData = {
         x: 20,
         y: 70,
         icon: '⛏️',
+        iconImg: pickaxeImg,
         type: 'collectible', 
         name: 'Rusty Pickaxe',
         item: '⛏️',
@@ -318,6 +362,7 @@ export const sceneData = {
         x: 50,
         y: 40,
         icon: '🏮',
+        iconImg: lanternImg,
         type: 'inspect',
         message: 'It flickers... something is watching.'
       }
