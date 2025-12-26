@@ -230,13 +230,6 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
   // Render Helpers
   const WORLD_WIDTH = 10000 // Match collision logic
 
-  // DEBUG OVERLAY
-  const debugItems = items.map(item => {
-    const x = (item.x / 100) * WORLD_WIDTH
-    const y = (item.y / 100) * (floorY + 100)
-    return { ...item, worldX: x, worldY: y, collected: collectedSceneItems.includes(item.id) }
-  })
-
   return (
     <div style={{
       position: 'fixed',
@@ -246,27 +239,6 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
       fontFamily: "'Press Start 2P', cursive",
       zIndex: 9999
     }}>
-       {/* DEBUG INFO */}
-       <div style={{
-           position: 'absolute',
-           top: 60, left: 20,
-           background: 'rgba(0,0,0,0.5)',
-           color: '#0f0',
-           padding: 10,
-           zIndex: 50000,
-           pointerEvents: 'none',
-           fontSize: 10,
-           whiteSpace: 'pre-wrap'
-       }}>
-           P: ({Math.round(player.x)}, {Math.round(player.y)}) <br/>
-           Cam: {Math.round(cameraX)} <br/>
-           FloorY: {Math.round(floorY)} <br/>
-           Items: {debugItems.length} <br/>
-           {debugItems.slice(0, 5).map(i => 
-               `${i.id}: ${Math.round(i.worldX)}, ${Math.round(i.worldY)} [${i.collected ? 'COLL' : 'ACT'}]`
-           ).join('\n')}
-           {debugItems.length > 5 && '\n...'}
-       </div>
 
        {/* HUD: Close Button (Fixed Overlay) */}
        <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 50 }}>

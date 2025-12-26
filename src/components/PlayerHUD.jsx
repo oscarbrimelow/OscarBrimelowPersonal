@@ -9,7 +9,7 @@ export default function PlayerHUD({ isShaking }) {
       position: 'fixed',
       top: 20,
       left: 20,
-      zIndex: 1000,
+      zIndex: 10001,
       fontFamily: "'Press Start 2P', cursive",
       color: '#fff',
       display: 'flex',
