@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import me8bit from '../assets/me8bit.png'
+import jhbground from '../assets/jhbground.png'
 import { play } from '../audio/engine'
 import { useGame } from '../context/GameContext'
 

@@ -17,6 +17,7 @@ import { play, initAudioContext } from './audio/engine.js'
 import skyBg from './assets/sky-bg.png'
 import jhbBg from './assets/jhb-bg.png'
 import cleBg from './assets/cle-bg.png'
+import cleScenery from './assets/cle-scenery.png'
 import iomBg from './assets/iom-bg.png'
 import jungleBg from './assets/jungle-bg.png'
 import mineshaftBg from './assets/mineshaft-bg.png'
@@ -388,7 +389,7 @@ function MainGame() {
           sceneId={activeScene}
           bgImage={
             activeScene === 'jhb' ? jhbBg :
-            activeScene === 'cle' ? cleBg :
+            activeScene === 'cle' ? cleScenery :
           activeScene === 'iom' ? iomBg :
           activeScene === 'jungle' ? jungleBg :
           mineshaftBg
