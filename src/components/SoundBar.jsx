@@ -4,7 +4,21 @@ import { isMuted, toggleMute, startBgm, nowPlaying } from '../audio/engine'
 export default function SoundBar() {
   const [muted, setMuted] = useState(isMuted())
   const [hovered, setHovered] = useState(false)
-  useEffect(() => { startBgm() }, [])
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      startBgm()
+      window.removeEventListener('click', handleFirstInteraction)
+      window.removeEventListener('keydown', handleFirstInteraction)
+    }
+
+    window.addEventListener('click', handleFirstInteraction)
+    window.addEventListener('keydown', handleFirstInteraction)
+
+    return () => {
+      window.removeEventListener('click', handleFirstInteraction)
+      window.removeEventListener('keydown', handleFirstInteraction)
+    }
+  }, [])
   return (
     <div 
       className="soundbar" 
