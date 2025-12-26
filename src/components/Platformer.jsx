@@ -324,8 +324,8 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
         <div style={{
           position: 'fixed',
           top: 0, left: 0, width: '100%', height: '100%',
-          background: 'rgba(0,0,0,0.8)',
-          zIndex: 5000,
+          background: 'rgba(0,0,0,0.9)', // Slightly darker
+          zIndex: 10000, // Ensure it's above everything
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

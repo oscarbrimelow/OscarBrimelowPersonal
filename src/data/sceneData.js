@@ -87,7 +87,7 @@ export const sceneData = {
         icon: '🎢',
         type: 'landmark',
         name: 'Gold Reef City',
-        image: goldReefImg,
+        image: ponteImg, // TEMP FIX: Use Ponte Image to test if goldreefcity.jpg is corrupt
         description: 'Built on top of an old gold mine, this theme park represents the gold rush history of Johannesburg.'
       },
       {
