@@ -18,9 +18,20 @@ export function GameProvider({ children }) {
   const [godMode, setGodMode] = useState(false)
   const [hasSecretApp, setHasSecretApp] = useState(false)
   const [collectedSceneItems, setCollectedSceneItems] = useState([]) // Array of IDs
+  const [visitedScenes, setVisitedScenes] = useState([])
 
   // Actions
   const addMoney = (amount) => setMoney(m => m + amount)
+
+  const visitScene = (sceneId) => {
+    if (!visitedScenes.includes(sceneId)) {
+      setVisitedScenes(prev => [...prev, sceneId])
+      addMoney(50)
+      play('collect')
+      return true
+    }
+    return false
+  }
 
   const markItemAsCollected = (itemId) => {
     if (!collectedSceneItems.includes(itemId)) {
