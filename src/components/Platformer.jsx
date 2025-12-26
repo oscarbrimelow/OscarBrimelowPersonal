@@ -262,34 +262,21 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
           WASD / ARROWS to Move & Jump
       </div>
 
-      {/* Parallax Background (Infinite Tiling) - Replaced with img for error handling */}
+      {/* Parallax Background (Infinite Tiling) - Fixed relative to viewport */}
       <div style={{
-          position: 'absolute', 
+          position: 'absolute', // Absolute relative to the fixed main container
           top: 0, 
           left: 0,
           width: '100%', 
           height: '100%',
-          overflow: 'hidden',
+          backgroundColor: '#87CEEB', // Fallback sky color
+          backgroundImage: `url(${bgImage})`,
+          backgroundRepeat: 'repeat-x',
+          backgroundSize: 'auto 100%',
+          backgroundPositionX: `${-cameraX * 0.5}px`, // Move background slower than camera
           zIndex: 0,
           pointerEvents: 'none'
-      }}>
-         <img 
-            src={bgImage} 
-            style={{
-                width: 'auto',
-                height: '100%',
-                position: 'absolute',
-                left: `${-cameraX * 0.5}px`, // Simple parallax
-                minWidth: '100%'
-            }}
-            onError={(e) => {
-                console.error("Background image failed to load:", bgImage)
-                e.target.style.display = 'none'
-                e.target.parentElement.style.backgroundColor = '#87CEEB' // Fallback color
-            }}
-         />
-         {/* Duplicate for tiling effect if needed, though simple parallax is fine for now */}
-      </div>
+      }} />
 
       {/* Start Game Overlay */}
       {!hasClickedStart && (
