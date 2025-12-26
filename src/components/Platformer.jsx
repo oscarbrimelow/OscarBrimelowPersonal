@@ -357,7 +357,8 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
 
         {/* Items */}
         {items.map(item => {
-             if (collectedSceneItems.includes(item.id) && item.type !== 'landmark') return null
+             // TEMP DEBUG: Show collected items too
+             // if (collectedSceneItems.includes(item.id) && item.type !== 'landmark') return null
              
              const x = (item.x / 100) * WORLD_WIDTH
              const y = (item.y / 100) * (floorY + 100)
@@ -375,9 +376,9 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        zIndex: 100,
-                        border: '2px solid red', // DEBUG VISIBILITY
-                        background: 'rgba(255,255,255,0.2)'
+                        zIndex: 1000, // Boost Z-Index
+                        border: '4px solid red', // DEBUG VISIBILITY THICKER
+                        background: 'rgba(255, 0, 0, 0.5)' // Red background to be super obvious
                     }}
                  >
                      {item.iconImg ? (
@@ -385,6 +386,10 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
                             src={item.iconImg} 
                             alt={item.name || 'item'} 
                             style={{ width: '100%', height: '100%', objectFit: 'contain', imageRendering: 'pixelated' }}
+                            onError={(e) => {
+                                e.target.style.display = 'none'
+                                e.target.parentNode.style.background = 'magenta' // Show magenta if image fails
+                            }}
                         />
                      ) : (
                         <div style={{ fontSize: '30px' }}>{item.icon || '❓'}</div>
@@ -392,6 +397,17 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
                  </motion.div>
              )
         })}
+
+        {/* TEST CUBE AT PLAYER X */}
+        <div style={{
+            position: 'absolute',
+            left: player.x + 100,
+            top: player.y,
+            width: 50, height: 50,
+            background: 'lime',
+            zIndex: 9999,
+            border: '2px solid black'
+        }}>TEST</div>
 
         {/* Player */}
         <div style={{
