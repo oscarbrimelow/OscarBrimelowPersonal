@@ -34,12 +34,24 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
   const keysRef = useRef({}) 
   const requestRef = useRef()
   const playerRef = useRef(player) // Ref for loop access without dependencies
+  const lastTriggeredRef = useRef({}) // Cooldown tracker
+  const containerRef = useRef(null) // Focus container
   const [activeLandmark, setActiveLandmark] = useState(null)
   
   // Sync state to ref
   useEffect(() => {
     playerRef.current = player
   }, [player])
+
+  // Focus Window on Mount for Controls
+  useEffect(() => {
+    // Focus the container div explicitly
+    if (containerRef.current) {
+        containerRef.current.focus()
+    }
+    // Also try window focus as backup
+    window.focus()
+  }, [])
 
   // Resize Handler
   useEffect(() => {

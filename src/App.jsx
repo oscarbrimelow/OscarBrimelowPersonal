@@ -390,7 +390,7 @@ function MainGame() {
           bgImage={
             activeScene === 'jhb' ? jhbBg :
             activeScene === 'cle' ? cleScenery :
-            activeScene === 'iom' ? iomBg : // Revert to iomBg as iom-scenery.png causes blank screen
+            activeScene === 'iom' ? iomScenery :
             activeScene === 'jungle' ? jungleBg :
             mineshaftBg
         }
