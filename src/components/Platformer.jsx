@@ -221,6 +221,21 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
           WASD / ARROWS to Move & Jump
       </div>
 
+      {/* Parallax Background (Infinite Tiling) - Fixed relative to viewport */}
+      <div style={{
+          position: 'absolute', // Absolute relative to the fixed main container
+          top: 0, 
+          left: 0,
+          width: '100%', 
+          height: '100%',
+          backgroundImage: `url(${bgImage})`,
+          backgroundRepeat: 'repeat-x',
+          backgroundSize: 'auto 100%',
+          backgroundPositionX: `${-cameraX * 0.5}px`, // Move background slower than camera
+          zIndex: 0,
+          pointerEvents: 'none'
+      }} />
+
       {/* Game World Container */}
       <div style={{
         position: 'absolute',
@@ -230,21 +245,6 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
         transition: 'transform 0.05s linear' // Smooth out camera jitter
       }}>
         
-        {/* Parallax Background (Infinite Tiling) - Fixed relative to viewport to prevent running out */}
-        <div style={{
-            position: 'fixed',
-            top: 0, 
-            left: 0,
-            width: '100vw', 
-            height: '100vh',
-            backgroundImage: `url(${bgImage})`,
-            backgroundRepeat: 'repeat-x',
-            backgroundSize: 'auto 100%',
-            backgroundPositionX: -cameraX * 0.5, // Move background slower than camera
-            zIndex: 0,
-            pointerEvents: 'none'
-        }} />
-
         {/* Floor (Infinite-ish) */}
          <div style={{
             position: 'absolute',
