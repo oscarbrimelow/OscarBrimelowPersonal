@@ -245,7 +245,9 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
             top: floorY,
             width: 200000, // Huge floor
             height: 200,
-            background: `repeating-linear-gradient(45deg, #333 0, #333 10px, #444 10px, #444 20px)`,
+            backgroundImage: `url(${jhbground})`,
+            backgroundRepeat: 'repeat-x',
+            backgroundSize: 'auto 100%',
             borderTop: '4px solid #fff'
         }}></div>
 
