@@ -357,17 +357,12 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
 
         {/* Items */}
         {items.map(item => {
-             // TEMP DEBUG: Show collected items too
-             // if (collectedSceneItems.includes(item.id) && item.type !== 'landmark') return null
-             
              const x = (item.x / 100) * WORLD_WIDTH
              const y = (item.y / 100) * (floorY + 100)
              
              return (
-                 <motion.div
+                 <div
                     key={item.id}
-                    animate={{ y: [y, y - 10, y] }} // Float animation
-                    transition={{ duration: 2, repeat: Infinity }}
                     style={{
                         position: 'absolute',
                         left: x,
@@ -376,11 +371,17 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        zIndex: 1000, // Boost Z-Index
-                        border: '4px solid red', // DEBUG VISIBILITY THICKER
-                        background: 'rgba(255, 0, 0, 0.5)' // Red background to be super obvious
+                        zIndex: 20000, // SUPER HIGH Z-INDEX
+                        border: '4px solid blue', // CHANGED TO BLUE
+                        background: 'rgba(0, 255, 255, 0.5)', // CYAN BACKGROUND
+                        color: 'black',
+                        fontSize: '10px',
+                        fontWeight: 'bold'
                     }}
                  >
+                     {/* ALWAYS SHOW ID FOR DEBUGGING */}
+                     <span style={{position:'absolute', top: -20, background:'white'}}>{item.id}</span>
+
                      {item.iconImg ? (
                         <img 
                             src={item.iconImg} 
@@ -388,13 +389,13 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
                             style={{ width: '100%', height: '100%', objectFit: 'contain', imageRendering: 'pixelated' }}
                             onError={(e) => {
                                 e.target.style.display = 'none'
-                                e.target.parentNode.style.background = 'magenta' // Show magenta if image fails
+                                // e.target.parentNode.style.background = 'magenta' 
                             }}
                         />
                      ) : (
                         <div style={{ fontSize: '30px' }}>{item.icon || '❓'}</div>
                      )}
-                 </motion.div>
+                 </div>
              )
         })}
 
