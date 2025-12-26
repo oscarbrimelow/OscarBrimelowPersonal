@@ -28,6 +28,7 @@ import pickaxeImg from '../assets/pickaxe.png'
 import lanternImg from '../assets/lantern.png'
 import fireImg from '../assets/fire.png'
 import rockImg from '../assets/rock.png'
+import chameleonImg from '../assets/chameleon.png'
 
 export const sceneData = {
   jhb: {
