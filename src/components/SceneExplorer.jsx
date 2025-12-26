@@ -6,7 +6,7 @@ import { sceneData } from '../data/sceneData'
 import { useGame } from '../context/GameContext'
 
 export default function SceneExplorer({ sceneId, bgImage, onClose }) {
-  const { addToInventory, addMoney, markItemAsCollected, collectedSceneItems } = useGame()
+  const { addToInventory, addMoney, markItemAsCollected, collectedSceneItems, visitScene } = useGame()
   const [targetPos, setTargetPos] = useState({ x: 50, y: 80 })
   const [facingRight, setFacingRight] = useState(true)
   const [transition, setTransition] = useState({ duration: 0 })
