@@ -183,6 +183,18 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
        // alert(item.message) // Alert pauses game loop, maybe show toast?
     } else if (item.type === 'landmark') {
         setActiveLandmark(item)
+    } else if (item.type === 'obstacle') {
+        play('blip') // Reuse blip for now
+        // Reset player to start
+        setPlayer({ 
+            x: 100, 
+            y: getFloorY() - PLAYER_SIZE, 
+            vx: 0, 
+            vy: 0, 
+            facingRight: true 
+        })
+        // Small timeout to allow render to catch up before alert
+        setTimeout(() => alert(item.message || "Ouch! Try again."), 10)
     }
   }
 

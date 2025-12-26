@@ -13,7 +13,7 @@ export const sceneData = {
       { 
         id: 'jhb_coffee', 
         x: 80, 
-        y: 75, 
+        y: 82, 
         icon: '☕', 
         type: 'collectible', 
         name: 'Strong Coffee', 
@@ -23,7 +23,7 @@ export const sceneData = {
       { 
         id: 'jhb_graffiti', 
         x: 20, 
-        y: 40, 
+        y: 82, 
         width: 15, 
         height: 10, 
         type: 'inspect', 
@@ -32,7 +32,7 @@ export const sceneData = {
       { 
         id: 'jhb_biltong', 
         x: 60, 
-        y: 85, 
+        y: 82, 
         icon: '🥩', 
         type: 'collectible', 
         name: 'Biltong', 
@@ -42,7 +42,7 @@ export const sceneData = {
       { 
         id: 'jhb_krugerrand', 
         x: 35, 
-        y: 60, 
+        y: 82, 
         icon: '🪙', 
         type: 'collectible', 
         name: 'Krugerrand', 
@@ -52,7 +52,7 @@ export const sceneData = {
       { 
         id: 'jhb_rooibos', 
         x: 10, 
-        y: 75, 
+        y: 82, 
         icon: '🍵', 
         type: 'collectible', 
         name: 'Rooibos Tea', 
@@ -62,7 +62,7 @@ export const sceneData = {
       {
         id: 'jhb_sign',
         x: 50,
-        y: 20,
+        y: 82,
         icon: '🛑',
         type: 'inspect',
         message: 'Street Sign: "Caution: Developers at work"'
@@ -70,7 +70,7 @@ export const sceneData = {
       {
         id: 'jhb_ponte',
         x: 75,
-        y: 35,
+        y: 65,
         width: 10,
         height: 30,
         type: 'landmark',
@@ -81,7 +81,7 @@ export const sceneData = {
       {
         id: 'jhb_goldreef',
         x: 15,
-        y: 30,
+        y: 70,
         width: 15,
         height: 15,
         type: 'landmark',
@@ -92,13 +92,38 @@ export const sceneData = {
       {
         id: 'jhb_melville',
         x: 85,
-        y: 25,
+        y: 75,
         width: 12,
         height: 12,
         type: 'landmark',
         name: 'Melville Koppies',
         image: melvilleImg,
         description: 'A nature reserve and heritage site in the heart of the city, showing the natural beauty of the Highveld.'
+      },
+      // Obstacles
+      {
+        id: 'jhb_obs_1',
+        x: 25,
+        y: 84,
+        icon: '🚧',
+        type: 'obstacle',
+        message: 'Ouch! Watch out for construction!'
+      },
+      {
+        id: 'jhb_obs_2',
+        x: 45,
+        y: 84,
+        icon: '🔥',
+        type: 'obstacle',
+        message: 'Too hot! Stay away from the fire!'
+      },
+      {
+        id: 'jhb_obs_3',
+        x: 65,
+        y: 84,
+        icon: '🪨',
+        type: 'obstacle',
+        message: 'You tripped over a rock!'
       }
     ]
   },
