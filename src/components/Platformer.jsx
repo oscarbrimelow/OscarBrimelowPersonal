@@ -38,6 +38,8 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
   const containerRef = useRef(null) // Focus container
   const [activeLandmark, setActiveLandmark] = useState(null)
   
+  const [hasClickedStart, setHasClickedStart] = useState(false)
+
   // Sync state to ref
   useEffect(() => {
     playerRef.current = player
@@ -52,6 +54,15 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
     // Also try window focus as backup
     window.focus()
   }, [])
+
+  // Force focus when user clicks start
+  const handleStartGame = () => {
+      setHasClickedStart(true)
+      if (containerRef.current) {
+          containerRef.current.focus()
+      }
+      play('blip')
+  }
 
   // Resize Handler
   useEffect(() => {
@@ -204,16 +215,15 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
         setActiveLandmark(item)
     } else if (item.type === 'obstacle') {
         play('blip') // Reuse blip for now
-        // Reset player to start
-        setPlayer({ 
-            x: 100, 
-            y: getFloorY() - PLAYER_SIZE, 
-            vx: 0, 
-            vy: 0, 
-            facingRight: true 
-        })
+        // Bounce player back instead of full reset
+        setPlayer(prev => ({ 
+            ...prev,
+            x: Math.max(0, prev.x - 200), // Bounce back 200px
+            vy: -10, // Small hop
+            vx: -5 // Push back velocity
+        }))
         // Small timeout to allow render to catch up before alert
-        setTimeout(() => alert(item.message || "Ouch! Try again."), 10)
+        setTimeout(() => alert(item.message || "Ouch! Watch out!"), 10)
     }
   }
 
@@ -252,20 +262,58 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
           WASD / ARROWS to Move & Jump
       </div>
 
-      {/* Parallax Background (Infinite Tiling) - Fixed relative to viewport */}
+      {/* Parallax Background (Infinite Tiling) - Replaced with img for error handling */}
       <div style={{
-          position: 'absolute', // Absolute relative to the fixed main container
+          position: 'absolute', 
           top: 0, 
           left: 0,
           width: '100%', 
           height: '100%',
-          backgroundImage: `url(${bgImage})`,
-          backgroundRepeat: 'repeat-x',
-          backgroundSize: 'auto 100%',
-          backgroundPositionX: `${-cameraX * 0.5}px`, // Move background slower than camera
+          overflow: 'hidden',
           zIndex: 0,
           pointerEvents: 'none'
-      }} />
+      }}>
+         <img 
+            src={bgImage} 
+            style={{
+                width: 'auto',
+                height: '100%',
+                position: 'absolute',
+                left: `${-cameraX * 0.5}px`, // Simple parallax
+                minWidth: '100%'
+            }}
+            onError={(e) => {
+                console.error("Background image failed to load:", bgImage)
+                e.target.style.display = 'none'
+                e.target.parentElement.style.backgroundColor = '#87CEEB' // Fallback color
+            }}
+         />
+         {/* Duplicate for tiling effect if needed, though simple parallax is fine for now */}
+      </div>
+
+      {/* Start Game Overlay */}
+      {!hasClickedStart && (
+        <div style={{
+            position: 'absolute',
+            top: 0, left: 0, width: '100%', height: '100%',
+            background: 'rgba(0,0,0,0.7)',
+            zIndex: 20000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            color: 'white'
+        }}>
+            <h1 style={{ marginBottom: 40, textShadow: '4px 4px 0 #000' }}>READY PLAYER ONE?</h1>
+            <button 
+                className="pixel-button" 
+                onClick={handleStartGame}
+                style={{ fontSize: 24, padding: '20px 40px', cursor: 'pointer' }}
+            >
+                CLICK TO START
+            </button>
+        </div>
+      )}
 
       {/* Game World Container */}
       <div style={{
