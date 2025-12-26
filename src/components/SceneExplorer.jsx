@@ -16,6 +16,14 @@ export default function SceneExplorer({ sceneId, bgImage, onClose }) {
   // This ensures the character moves at a constant walking pace
   const lastPos = useRef({ x: 50, y: 80 })
 
+  useEffect(() => {
+    // Check if it's a new location visit
+    const isNew = visitScene(sceneId)
+    if (isNew) {
+      alert(`New Location Discovered: ${sceneId.toUpperCase()}! You found $50.`)
+    }
+  }, [sceneId])
+
   const handleSceneClick = (e) => {
     // Get click coordinates relative to the scene container
     const rect = e.currentTarget.getBoundingClientRect()

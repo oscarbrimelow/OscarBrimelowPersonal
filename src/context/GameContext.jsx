@@ -197,7 +197,9 @@ export function GameProvider({ children }) {
     godMode,
     hasSecretApp,
     collectedSceneItems,
-    markItemAsCollected
+    markItemAsCollected,
+    visitScene,
+    visitedScenes
   }
 
   return (

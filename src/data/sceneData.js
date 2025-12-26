@@ -258,6 +258,17 @@ export const sceneData = {
         name: 'Ancient Idol',
         item: '🗿',
         message: 'A mysterious artifact...'
+      },
+      {
+        id: 'jungle_cucumber',
+        x: 75,
+        y: 65,
+        width: 15,
+        height: 15,
+        type: 'landmark',
+        name: 'Cucumber the Chameleon',
+        image: cucumberImg,
+        description: 'This is Cucumber, Oscar\'s pet chameleon!'
       }
     ]
   },

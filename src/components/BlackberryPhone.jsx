@@ -326,6 +326,10 @@ export default function BlackberryPhone() {
                  <WorldGuide onClose={() => setActiveApp(null)} />
               )}
 
+              {activeApp === 'achievements' && (
+                 <Achievements onClose={() => setActiveApp(null)} />
+              )}
+
               {activeApp === 'secrets' && (
                  <div style={{ textAlign: 'center' }}>
                    <h4 style={{ color: '#00ffd0', marginBottom: 20 }}>Hidden Logs</h4>
