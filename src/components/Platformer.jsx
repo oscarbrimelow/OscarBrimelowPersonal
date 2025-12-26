@@ -357,31 +357,34 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
 
         {/* Items */}
         {items.map(item => {
+             // Hide collected items unless they are landmarks (which stay visible)
+             if (collectedSceneItems.includes(item.id) && item.type !== 'landmark') return null
+             
              const x = (item.x / 100) * WORLD_WIDTH
              const y = (item.y / 100) * (floorY + 100)
              
+             // Dynamic size based on type or default large size
+             const width = item.width ? item.width * 5 : 120 // Larger default
+             const height = item.height ? item.height * 5 : 120
+             
              return (
-                 <div
+                 <motion.div
                     key={item.id}
+                    animate={{ y: [y, y - 10, y] }} // Float animation
+                    transition={{ duration: 2, repeat: Infinity }}
                     style={{
                         position: 'absolute',
                         left: x,
                         top: y,
-                        width: 64, height: 64,
+                        width: width, height: height,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        zIndex: 20000, // SUPER HIGH Z-INDEX
-                        border: '4px solid blue', // CHANGED TO BLUE
-                        background: 'rgba(0, 255, 255, 0.5)', // CYAN BACKGROUND
-                        color: 'black',
-                        fontSize: '10px',
-                        fontWeight: 'bold'
+                        zIndex: 1000, 
+                        // border: '4px solid blue', // DEBUG REMOVED
+                        // background: 'rgba(0, 255, 255, 0.5)', // DEBUG REMOVED
                     }}
                  >
-                     {/* ALWAYS SHOW ID FOR DEBUGGING */}
-                     <span style={{position:'absolute', top: -20, background:'white'}}>{item.id}</span>
-
                      {item.iconImg ? (
                         <img 
                             src={item.iconImg} 
@@ -389,26 +392,14 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
                             style={{ width: '100%', height: '100%', objectFit: 'contain', imageRendering: 'pixelated' }}
                             onError={(e) => {
                                 e.target.style.display = 'none'
-                                // e.target.parentNode.style.background = 'magenta' 
                             }}
                         />
                      ) : (
-                        <div style={{ fontSize: '30px' }}>{item.icon || '❓'}</div>
+                        <div style={{ fontSize: '60px' }}>{item.icon || '❓'}</div>
                      )}
-                 </div>
+                 </motion.div>
              )
         })}
-
-        {/* TEST CUBE AT PLAYER X */}
-        <div style={{
-            position: 'absolute',
-            left: player.x + 100,
-            top: player.y,
-            width: 50, height: 50,
-            background: 'lime',
-            zIndex: 9999,
-            border: '2px solid black'
-        }}>TEST</div>
 
         {/* Player */}
         <div style={{
