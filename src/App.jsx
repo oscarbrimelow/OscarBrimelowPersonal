@@ -394,7 +394,7 @@ function MainGame() {
             activeScene === 'iom' ? iomScenery :
             activeScene === 'jungle' ? jungleBg :
             mineshaftBg
-        }
+          }
           onClose={() => setActiveScene(null)}
         />
       )}

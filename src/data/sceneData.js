@@ -103,14 +103,6 @@ export const sceneData = {
       },
       // Obstacles
       {
-        id: 'jhb_obs_1',
-        x: 25,
-        y: 84,
-        icon: '🚧',
-        type: 'obstacle',
-        message: 'Ouch! Watch out for construction!'
-      },
-      {
         id: 'jhb_obs_2',
         x: 45,
         y: 84,
