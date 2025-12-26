@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import me8bit from '../assets/me8bit.png'
 import { play } from '../audio/engine'
