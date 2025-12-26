@@ -6,18 +6,27 @@ import { useGame } from '../context/GameContext'
 
 // Constants
 const GRAVITY = 0.6
-const JUMP_FORCE = -12
+const JUMP_FORCE = -15 // Increased for bigger jump
 const MOVE_SPEED = 5
 const FRICTION = 0.8
-const SCREEN_HEIGHT = 600 // Virtual height for physics
-const FLOOR_Y = 500
-const PLAYER_SIZE = 60
+const PLAYER_SIZE = 150 // Bigger character
 
 export default function Platformer({ sceneId, bgImage, items, onClose }) {
   const { addToInventory, addMoney, markItemAsCollected, collectedSceneItems, visitScene } = useGame()
   
   // Game State
-  const [player, setPlayer] = useState({ x: 100, y: FLOOR_Y - PLAYER_SIZE, vx: 0, vy: 0, facingRight: true })
+  // Initialize floor relative to window height to keep it low
+  const getFloorY = () => window.innerHeight - 100
+  
+  const [player, setPlayer] = useState({ 
+    x: 100, 
+    y: getFloorY() - PLAYER_SIZE, 
+    vx: 0, 
+    vy: 0, 
+    facingRight: true 
+  })
+  
+  const [floorY, setFloorY] = useState(getFloorY())
   const [cameraX, setCameraX] = useState(0)
   const [keys, setKeys] = useState({})
   const requestRef = useRef()
@@ -28,6 +37,15 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
   useEffect(() => {
     playerRef.current = player
   }, [player])
+
+  // Resize Handler
+  useEffect(() => {
+    const handleResize = () => {
+      setFloorY(window.innerHeight - 100)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     const isNew = visitScene(sceneId)
@@ -74,7 +92,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
       p.vx *= FRICTION
 
       // Jumping
-      if ((k['ArrowUp'] || k['KeyW'] || k['Space']) && p.y >= FLOOR_Y - PLAYER_SIZE - 1) {
+      if ((k['ArrowUp'] || k['KeyW'] || k['Space']) && p.y >= floorY - PLAYER_SIZE - 1) {
         p.vy = JUMP_FORCE
         play('blip')
       }
@@ -87,8 +105,8 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
       p.y += p.vy * dt
 
       // Floor Collision
-      if (p.y > FLOOR_Y - PLAYER_SIZE) {
-        p.y = FLOOR_Y - PLAYER_SIZE
+      if (p.y > floorY - PLAYER_SIZE) {
+        p.y = floorY - PLAYER_SIZE
         p.vy = 0
       }
 
@@ -113,7 +131,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
 
     requestRef.current = requestAnimationFrame(update)
     return () => cancelAnimationFrame(requestRef.current)
-  }, [keys])
+  }, [keys, floorY])
 
   // Item Collection Check
   useEffect(() => {
@@ -129,18 +147,22 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
 
       // Map item % to World Pixels
       const itemX = (item.x / 100) * WORLD_WIDTH
-      const itemY = (item.y / 100) * SCREEN_HEIGHT
+      // Items float above floor relative to their original Y% (inverted for ground up?)
+      // Original Y=0 (top) Y=100 (bottom)
+      // Let's keep original mapping but scaled to new height
+      // const itemY = (item.y / 100) * SCREEN_HEIGHT (OLD)
+      const itemY = (item.y / 100) * (floorY + 100) // Rough approximation
       
       // Distance check
       const dx = p.x - itemX
       const dy = p.y - itemY
       const dist = Math.sqrt(dx*dx + dy*dy)
 
-      if (dist < 80) { // Collection Radius
+      if (dist < 120) { // Collection Radius (Increased for bigger player)
         handleItemCollect(item)
       }
     })
-  }, [player, items, collectedSceneItems]) // Check on player update
+  }, [player, items, collectedSceneItems, floorY]) // Check on player update
 
   const handleItemCollect = (item) => {
     play('collect')
@@ -222,7 +244,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
         {/* Floor */}
         <div style={{
             position: 'absolute',
-            left: 0, top: FLOOR_Y,
+            left: 0, top: floorY,
             width: WORLD_WIDTH + 1000,
             height: 200,
             background: `repeating-linear-gradient(45deg, #333 0, #333 10px, #444 10px, #444 20px)`,
@@ -234,7 +256,7 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
              if (collectedSceneItems.includes(item.id) && item.type !== 'landmark') return null
              
              const x = (item.x / 100) * WORLD_WIDTH
-             const y = (item.y / 100) * SCREEN_HEIGHT
+             const y = (item.y / 100) * (floorY + 100)
              
              return (
                  <motion.div
