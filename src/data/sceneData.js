@@ -5,6 +5,7 @@ import melvilleImg from '../assets/melville.jpg'
 import rocknrollImg from '../assets/rocknroll.jpg'
 import laxeyWheelImg from '../assets/laxeywheel.jpg'
 import sulbyGlenImg from '../assets/sulbyglenhotel.jpg'
+import cucumberImg from '../assets/cucumberchameleonjungle.JPG'
 
 export const sceneData = {
   jhb: {
