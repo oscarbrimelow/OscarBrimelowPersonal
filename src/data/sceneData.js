@@ -84,6 +84,7 @@ export const sceneData = {
         y: 70,
         width: 15,
         height: 15,
+        icon: '🎢',
         type: 'landmark',
         name: 'Gold Reef City',
         image: goldReefImg,

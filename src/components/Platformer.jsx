@@ -343,11 +343,20 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
             onClick={e => e.stopPropagation()}
           >
              <h2 style={{ fontSize: 24, marginBottom: 20 }}>{activeLandmark.name}</h2>
-             {activeLandmark.image && (
+             {activeLandmark.image ? (
                <img 
                  src={activeLandmark.image} 
-                 style={{ width: '100%', maxHeight: 300, objectFit: 'cover', marginBottom: 20, border: '2px solid white' }} 
+                 alt={activeLandmark.name}
+                 style={{ width: '100%', maxHeight: 300, objectFit: 'contain', marginBottom: 20, border: '2px solid white', background: '#000' }} 
+                 onError={(e) => {
+                   e.target.style.display = 'none'
+                   console.error("Image failed to load:", activeLandmark.image)
+                 }}
                />
+             ) : (
+                <div style={{ width: '100%', height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid #555', marginBottom: 20 }}>
+                    <span style={{ fontSize: 40 }}>🖼️</span>
+                </div>
              )}
              <p style={{ lineHeight: 1.5, marginBottom: 20 }}>{activeLandmark.description}</p>
              <button className="pixel-button" onClick={() => setActiveLandmark(null)}>CLOSE</button>
