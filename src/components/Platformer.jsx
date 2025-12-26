@@ -29,7 +29,8 @@ export default function Platformer({ sceneId, bgImage, items, onClose }) {
   
   const [floorY, setFloorY] = useState(getFloorY())
   const [cameraX, setCameraX] = useState(0)
-  const [keys, setKeys] = useState({})
+  // keys is now a ref to prevent re-renders
+  // const [keys, setKeys] = useState({}) 
   const requestRef = useRef()
   const playerRef = useRef(player) // Ref for loop access without dependencies
   const [activeLandmark, setActiveLandmark] = useState(null)
